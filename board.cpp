@@ -173,6 +173,38 @@ U64 generateHashKey(Board&board) {
     return key;
 }
 
+void Board::printBoard() {
+    int sq, file, rank, pieceIndex;
+    printf("\nGame Board:\n");
+    for (rank = RANK_8; rank >= RANK_1; rank--)
+    {
+        printf("%d ", rank+1);
+        for (file = FILE_A; file <= FILE_H; file++)
+        {
+            sq = fileRankToSq(file, rank);
+            pieceIndex = squareToPiece[sq];
+            printf("%3c", pieceChar[pieceIndex]);
+        }
+        printf("\n");
+    }
+
+    printf("\n  ");
+    for (file = FILE_A; file <= FILE_H; file++)
+    {
+        printf("%3c", 'a' + file);
+    }
+    printf("\n\n");
+    printf("Side: %c\n", sideChar[side]);
+    printf("EnPas: %d\n", enPasSq);
+    printf("Castle: %c%c%c%c\n", 
+        castlePermission & WKCA ? 'K' : '-', 
+        castlePermission & WQCA ? 'Q' : '-', 
+        castlePermission & BKCA ? 'k' : '-', 
+        castlePermission & BQCA ? 'q' : '-');
+
+    printf("HashKey: %llX\n\n", hashkey);
+}
+
 void Board::resetBoard() {
     // Set all the square to null piece
     for (int i = 0; i < NUM_BIG_SQ; i++)
