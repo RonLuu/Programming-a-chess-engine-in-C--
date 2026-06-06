@@ -14,7 +14,7 @@ int sqToFile[NUM_BIG_SQ];
 U64 setMask[NUM_SML_SQ];
 U64 clrMask[NUM_SML_SQ];
 
-U64 pieceHashKeys[NUM_PIECE][NUM_BIG_SQ];
+U64 pieceHashKeys[NUM_UNIQUE_PIECE][NUM_BIG_SQ];
 U64 sideHashKey;
 U64 castleHashKeys[16];
 
@@ -57,7 +57,7 @@ void initBitMasks() {
 }
 
 void initHashKeys() {
-    for (int p = 0; p < NUM_PIECE; p++)
+    for (int p = 0; p < NUM_UNIQUE_PIECE; p++)
     {
         for (int sq = 0; sq < NUM_BIG_SQ; sq++)
         {
