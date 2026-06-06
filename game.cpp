@@ -1,3 +1,5 @@
-int main() {
+#include "defintion.hpp"
 
+int main() {
+    allInit();
 }
