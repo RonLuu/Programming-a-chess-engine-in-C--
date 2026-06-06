@@ -164,6 +164,40 @@ void hashCastlePerm(U64& key, Board& board) {
     key ^= castleHashKeys[board.castlePermission];
 }
 
+void updateListMaterial(Board& board) {
+    int curPiece;
+    int color;
+
+    for (int sq64 = 0; sq64 < NUM_SML_SQ; sq64++) {
+        int sq120 = sq64To120[sq64];
+        curPiece = board.squareToPiece[sq120];
+        if (curPiece != EMPTY) {
+            color = pieceColor[curPiece];
+
+            if (isPieceBig[curPiece]) board.numBigPieces[color] ++;
+            if (isPieceMaj[curPiece]) board.numMajPieces[color] ++;
+            if (isPieceMin[curPiece]) board.numMinPieces[color] ++;
+
+            board.materialPoints[color] += pieceToValue[curPiece];
+
+            board.pieceSq[curPiece][board.numPieceOnBoard[curPiece]++] = sq120;
+
+            if (curPiece == wK) board.kingSq[WHITE] = sq120;
+            if (curPiece == bK) board.kingSq[BLACK] = sq120;
+
+            if (curPiece == wP) {
+                setBit(board.pawnBitboard[WHITE], sq64);
+                setBit(board.pawnBitboard[BOTH], sq64);
+            }
+            else if (curPiece == bP) {
+                setBit(board.pawnBitboard[BLACK], sq64);
+                setBit(board.pawnBitboard[BOTH], sq64);
+            }
+
+        }
+    }
+}
+
 U64 generateHashKey(Board&board) {
     U64 key = 0;
     hashPieces(key, board);
@@ -281,4 +315,6 @@ void Board::parseFen(std::string_view fen) {
     fen = parseEnPassant(fen, *this);
 
     hashkey = generateHashKey(*this);
+
+    updateListMaterial(*this);
 }

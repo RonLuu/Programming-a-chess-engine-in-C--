@@ -29,6 +29,14 @@ constexpr int fileRankToSq(int file, int rank)
     return rank * 10 + (file + 21);
 }
 
+constexpr void setBit(U64& bb, int sq) {
+    bb |= setMask[sq];
+}
+
+constexpr void clrBit(U64& bb, int sq) {
+    bb &= clrMask[sq];
+}
+
 enum { WHITE, BLACK, BOTH };
 enum { WKCA = 1, WQCA = 2, BKCA = 4, BQCA = 8 };
 enum { EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK, NULL_PIECE };
