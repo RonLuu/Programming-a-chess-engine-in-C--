@@ -4,27 +4,34 @@
 
 struct Board {
     int squareToPiece[NUM_BIG_SQ];
-    U64 pawnSq[3];
-    int kingSq[2];
+    U64 pawnBitboard[3];
+    int kingSq[NUM_OF_SIDE];
 
     int side;
+
     int enPasSq;
+    
     int fiftyMove;
 
     int ply;
+    
     int historyIndex;
     
     U64 hashkey;
 
-    int numPieceOnBoard[NUM_PIECE];
+    int numPieceOnBoard[NUM_UNIQUE_PIECE];
 
     int castlePermission;
 
-    int numBigPieces[2];
-    int numMajPieces[2];
-    int numMinPieces[2];
+    int numBigPieces[NUM_OF_SIDE];
+    int numMajPieces[NUM_OF_SIDE];
+    int numMinPieces[NUM_OF_SIDE];
 
-    int materialPoints[2];
+    int materialPoints[NUM_OF_SIDE];
 
-    int pieceSq[NUM_PIECE][MAX_NUM_PIECE];
+    int pieceSq[NUM_UNIQUE_PIECE][MAX_NUM_PIECE];
+
+
+    void resetBoard();
+    void parseFen(std::string_view);
 };
