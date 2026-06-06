@@ -2,15 +2,26 @@
 #include <string_view>
 #include <cassert>
 #include <iostream>
-#include "board.hpp"
 
 using U64 = unsigned long long;
 
 constexpr int NUM_OF_SIDE = 2;
 constexpr int NUM_BIG_SQ = 120;
 constexpr int NUM_SML_SQ = 64;
-constexpr int NUM_UNIQUE_PIECE = 12;
+constexpr int NUM_UNIQUE_PIECE = 13;
 constexpr int MAX_NUM_PIECE = 10;
+
+constexpr int pieceToValue[13] = {0, 100, 325, 325, 550, 1000, 50000, 100, 325, 325, 550, 1000, 50000};
+constexpr int pieceColor[13] = {BOTH, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK};
+
+constexpr bool isPieceBig[13] = {false, false, true, true, true, true, true, false, true, true, true, true, true};
+constexpr bool isPieceMaj[13] = {false, false, false, false, true, true, true, false, false, false, true, true, true};
+constexpr bool isPieceMin[13] = {false, false, true, true, false, false, false, false, true, true, false, false, false};
+
+constexpr std::string_view sideChar = "wb-";
+constexpr std::string_view rankChar = "12345678";
+constexpr std::string_view fileChar = "abcdefgh";
+constexpr std::string_view pieceChar = ".PNBRQKpnbrqk";
 constexpr std::string_view START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 constexpr int fileRankToSq(int file, int rank)
@@ -39,6 +50,8 @@ enum
 // init.c
 extern int sq120To64[NUM_BIG_SQ];
 extern int sq64To120[NUM_SML_SQ];
+extern int sqToRank[NUM_BIG_SQ];
+extern int sqToFile[NUM_BIG_SQ];
 extern U64 setMask[NUM_SML_SQ];
 extern U64 clrMask[NUM_SML_SQ];
 extern U64 pieceHashKeys[NUM_UNIQUE_PIECE][NUM_BIG_SQ];
@@ -50,6 +63,3 @@ void initSq120And64();
 void initBitMasks();
 void initHashKeys();
 void initFileRankBrd();
-
-// board.c
-extern Board board;
