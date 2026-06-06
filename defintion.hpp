@@ -2,6 +2,7 @@
 #include <string_view>
 #include <cassert>
 #include <iostream>
+#include "board.hpp"
 
 using U64 = unsigned long long;
 
@@ -44,9 +45,11 @@ extern U64 pieceHashKeys[NUM_UNIQUE_PIECE][NUM_BIG_SQ];
 extern U64 sideHashKey;
 extern U64 castleHashKeys[16];
 
-// init.c
 void allInit();
 void initSq120And64();
 void initBitMasks();
 void initHashKeys();
 void initFileRankBrd();
+
+// board.c
+extern Board board;
