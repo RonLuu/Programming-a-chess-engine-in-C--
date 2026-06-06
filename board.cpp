@@ -132,6 +132,47 @@ std::string_view parseEnPassant(std::string_view fen, Board& board) {
     return fen;
 }
 
+void hashPieces(U64& key, Board&board) {
+    for (int curSq = 0; curSq < NUM_SML_SQ; curSq++)
+    {
+        int sq120 = sq64To120[curSq];
+        int curPiece = board.squareToPiece[sq120];
+        if (curPiece != EMPTY && curPiece != NO_SQ && curPiece != OFFBOARD) {
+            assert(wP <= curPiece && curPiece <= bK);
+            key ^= pieceHashKeys[curPiece][sq120];
+        }
+    }
+}
+
+void hashSide(U64& key, Board& board) {
+    if (board.side == WHITE) {
+        key ^= sideHashKey;
+    }
+}
+
+void hashEnPassant(U64& key, Board& board) {
+    int enPasSq = board.enPasSq;
+    if (enPasSq != NO_SQ) {
+        assert(A1 <= enPasSq && enPasSq <= H8);
+        assert(sqToRank[enPasSq] == RANK_3 || sqToRank[enPasSq] == RANK_6);
+        key ^= pieceHashKeys[EMPTY][enPasSq];
+    }
+}
+
+void hashCastlePerm(U64& key, Board& board) {
+    assert(0 <= board.castlePermission && board.castlePermission <= 15);
+    key ^= castleHashKeys[board.castlePermission];
+}
+
+U64 generateHashKey(Board&board) {
+    U64 key = 0;
+    hashPieces(key, board);
+    hashSide(key, board);
+    hashEnPassant(key, board);
+    hashCastlePerm(key, board);
+    return key;
+}
+
 void Board::resetBoard() {
     // Set all the square to null piece
     for (int i = 0; i < NUM_BIG_SQ; i++)
@@ -206,4 +247,6 @@ void Board::parseFen(std::string_view fen) {
     fen = parseSide(fen, *this);
     fen = parseCastlePermission(fen, *this);
     fen = parseEnPassant(fen, *this);
+
+    hashkey = generateHashKey(*this);
 }
