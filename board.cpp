@@ -296,35 +296,33 @@ void Board::checkBoard() {
 }
 
 void Board::printBoard() {
-    int sq, file, rank, pieceIndex;
-    printf("\nGame Board:\n");
-    for (rank = RANK_8; rank >= RANK_1; rank--)
-    {
-        printf("%d ", rank+1);
-        for (file = FILE_A; file <= FILE_H; file++)
-        {
-            sq = fileRankToSq(file, rank);
-            pieceIndex = squareToPiece[sq];
-            printf("%3c", pieceChar[pieceIndex]);
+    std::cout << "\nGame Board:\n";
+    
+    for (int rank = RANK_8; rank >= RANK_1; rank--) {
+        std::cout << rank + 1 << " ";
+        for (int file = FILE_A; file <= FILE_H; file++) {
+            int sq120 = fileRankToSq(file, rank);
+            int curPiece = squareToPiece[sq120];
+            std::cout << std::setw(3) << pieceChar[curPiece];
         }
-        printf("\n");
+        std::cout << std::endl;
     }
 
-    printf("\n  ");
-    for (file = FILE_A; file <= FILE_H; file++)
-    {
-        printf("%3c", 'a' + file);
+    std::cout << std::endl << "  ";
+    for (int file = FILE_A; file <= FILE_H; file++) {
+        std::cout << std::setw(3) << static_cast<char>('a' + file);
     }
-    printf("\n\n");
-    printf("Side: %c\n", sideChar[side]);
-    printf("EnPas: %d\n", enPasSq);
-    printf("Castle: %c%c%c%c\n", 
-        castlePermission & WKCA ? 'K' : '-', 
-        castlePermission & WQCA ? 'Q' : '-', 
-        castlePermission & BKCA ? 'k' : '-', 
-        castlePermission & BQCA ? 'q' : '-');
 
-    printf("HashKey: %llX\n\n", hashkey);
+    std::cout << std::endl << std::endl;
+    std::cout << "Side: " << sideChar[side] << std::endl;
+    std::cout << "EnPas: " << enPasSq << std::endl;
+    std::cout << "Castle: "
+              << (castlePermission & WKCA ? 'K' : '-')
+              << (castlePermission & WQCA ? 'Q' : '-')
+              << (castlePermission & BKCA ? 'k' : '-')
+              << (castlePermission & BQCA ? 'q' : '-')
+              << std::endl;
+    std::cout << "HashKey: " << std::hex << std::uppercase << hashkey << std::dec << std::endl << std::endl;
 }
 
 void Board::parseFen(std::string_view fen) {
