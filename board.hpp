@@ -32,6 +32,7 @@ struct Board {
     int pieceSq[NUM_UNIQUE_PIECE][MAX_NUM_PIECE];
 
 
+    void checkBoard();
     void resetBoard();
     void parseFen(std::string_view);
     void printBoard();

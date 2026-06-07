@@ -132,6 +132,88 @@ std::string_view parseEnPassant(std::string_view fen, Board& board) {
     return fen;
 }
 
+void checkMaterialPoint(Board& board) {
+    std::array<int,2> materialPointsCounter = {0, 0};
+    for (int sq64 = 0; sq64 < NUM_SML_SQ; sq64++) {
+        int sq120 = sq64To120[sq64];
+        int curPiece = board.squareToPiece[sq120];
+        int colour = pieceColor[curPiece];
+        materialPointsCounter[colour] += pieceToValue[curPiece];
+    }
+
+    assert(materialPointsCounter[WHITE] == board.materialPoints[WHITE] && 
+           materialPointsCounter[BLACK] == board.materialPoints[BLACK]);
+}
+void checkNumberOfPiece(Board& board) {
+    std::array<int, 13>piece_counter = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    for (int curSq = 0; curSq < NUM_SML_SQ; curSq++) {
+        int sq120 = sq64To120[curSq];
+        int curPiece = board.squareToPiece[sq120];
+        piece_counter[curPiece] ++;
+    }
+
+    for (int i = 0; i < NUM_UNIQUE_PIECE; i++) {
+        assert(piece_counter[i] == board.numPieceOnBoard[i]);
+    }
+}
+void checkNumberOfSpecialPiece(Board& board) {
+    std::array<int,2> bigPiecesCounter = {0, 0};
+    std::array<int,2> majPiecesCounter = {0, 0};
+    std::array<int,2> minPiecesCounter = {0, 0};
+
+    for (int curSq = 0; curSq < NUM_SML_SQ; curSq++) {
+        int sq120 = sq64To120[curSq];
+        int curPiece = board.squareToPiece[sq120];
+        int color = pieceColor[curPiece];
+
+        if (isPieceBig[curPiece]) bigPiecesCounter[color]++; 
+        if (isPieceMaj[curPiece]) majPiecesCounter[color]++; 
+        if (isPieceMin[curPiece]) minPiecesCounter[color]++; 
+    }
+
+    assert(bigPiecesCounter[WHITE] == board.numBigPieces[WHITE] && bigPiecesCounter[BLACK] == board.numBigPieces[BLACK]);
+    assert(majPiecesCounter[WHITE] == board.numMajPieces[WHITE] && majPiecesCounter[BLACK] == board.numMajPieces[BLACK]);
+    assert(minPiecesCounter[WHITE] == board.numMinPieces[WHITE] && minPiecesCounter[BLACK] == board.numMinPieces[BLACK]);
+    
+}
+void checkPiecePosition(Board& board) {
+    for (int curPiece = wP; curPiece <= bK; curPiece++) {
+        for (int pieceIndex = 0; pieceIndex < board.numPieceOnBoard[curPiece]; pieceIndex++) {
+            int sq120 = board.pieceSq[curPiece][pieceIndex];
+            assert(board.squareToPiece[sq120] == curPiece);   
+        }
+    }
+}
+void checkPawnBit(Board& board) {
+    U64 whiteBit = board.pawnBitboard[WHITE];
+    U64 blackBit = board.pawnBitboard[BLACK]; 
+    U64 bothBit  = board.pawnBitboard[BOTH];
+
+    int whiteBitCount = std::popcount(whiteBit);
+    int blackBitCount = std::popcount(blackBit);
+    int bothBitCount  = std::popcount(bothBit);
+    
+    assert(whiteBitCount == board.numPieceOnBoard[wP]);
+    assert(blackBitCount == board.numPieceOnBoard[bP]);
+    assert(bothBitCount == board.numPieceOnBoard[wP] + board.numPieceOnBoard[bP]);
+
+
+    while (whiteBit) {
+        int sq64 = popBit(whiteBit);
+        assert(board.squareToPiece[sq64To120[sq64]] == wP);
+    }
+
+    while (blackBit) {
+        int sq64 = popBit(blackBit);
+        assert(board.squareToPiece[sq64To120[sq64]] == bP);
+    }
+    
+    while (bothBit) {
+        int sq64 = popBit(bothBit);
+        assert(board.squareToPiece[sq64To120[sq64]] == bP ||
+               board.squareToPiece[sq64To120[sq64]] == wP);
+    }
+}
 void hashPieces(U64& key, Board&board) {
     for (int curSq = 0; curSq < NUM_SML_SQ; curSq++)
     {
@@ -143,22 +225,19 @@ void hashPieces(U64& key, Board&board) {
         }
     }
 }
-
 void hashSide(U64& key, Board& board) {
     if (board.side == WHITE) {
         key ^= sideHashKey;
     }
 }
-
 void hashEnPassant(U64& key, Board& board) {
     int enPasSq = board.enPasSq;
     if (enPasSq != NO_SQ) {
-        assert(A1 <= enPasSq && enPasSq <= H8);
+        assert(isSqOnBoard(enPasSq));
         assert(sqToRank[enPasSq] == RANK_3 || sqToRank[enPasSq] == RANK_6);
         key ^= pieceHashKeys[EMPTY][enPasSq];
     }
 }
-
 void hashCastlePerm(U64& key, Board& board) {
     assert(0 <= board.castlePermission && board.castlePermission <= 15);
     key ^= castleHashKeys[board.castlePermission];
@@ -198,6 +277,7 @@ void updateListMaterial(Board& board) {
     }
 }
 
+
 U64 generateHashKey(Board&board) {
     U64 key = 0;
     hashPieces(key, board);
@@ -205,6 +285,14 @@ U64 generateHashKey(Board&board) {
     hashEnPassant(key, board);
     hashCastlePerm(key, board);
     return key;
+}
+
+void Board::checkBoard() {
+    checkPiecePosition(*this);
+    checkNumberOfPiece(*this);
+    checkNumberOfSpecialPiece(*this);
+    checkMaterialPoint(*this);
+    checkPawnBit(*this);
 }
 
 void Board::printBoard() {
@@ -237,6 +325,19 @@ void Board::printBoard() {
         castlePermission & BQCA ? 'q' : '-');
 
     printf("HashKey: %llX\n\n", hashkey);
+}
+
+void Board::parseFen(std::string_view fen) {
+    resetBoard();
+
+    fen = parsePosition(fen, *this);
+    fen = parseSide(fen, *this);
+    fen = parseCastlePermission(fen, *this);
+    fen = parseEnPassant(fen, *this);
+
+    hashkey = generateHashKey(*this);
+
+    updateListMaterial(*this);
 }
 
 void Board::resetBoard() {
@@ -304,17 +405,4 @@ void Board::resetBoard() {
         }
         
     }
-}
-
-void Board::parseFen(std::string_view fen) {
-    resetBoard();
-
-    fen = parsePosition(fen, *this);
-    fen = parseSide(fen, *this);
-    fen = parseCastlePermission(fen, *this);
-    fen = parseEnPassant(fen, *this);
-
-    hashkey = generateHashKey(*this);
-
-    updateListMaterial(*this);
 }
