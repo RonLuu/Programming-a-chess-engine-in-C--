@@ -48,6 +48,14 @@ constexpr bool isPieceBig[13] = {false, false, true, true, true, true, true, fal
 constexpr bool isPieceMaj[13] = {false, false, false, false, true, true, true, false, false, false, true, true, true};
 constexpr bool isPieceMin[13] = {false, false, true, true, false, false, false, false, true, true, false, false, false};
 
+constexpr bool isPiecePawn[13] = {false, true,  false, false, false, false, false, true,  false, false, false, false, false};
+constexpr bool isPieceKnight[13] = {false, false, true,  false, false, false, false, false, true,  false, false, false, false};
+constexpr bool isPieceKing[13] = {false, false, false, false, false, false, true, false, false, false, false, false, true};
+constexpr bool isPieceRookQueen[13] = {false, false, false, false, true, true, false, false, false, false, true,  true, false};
+constexpr bool isPieceBishopQueen[13] = {false, false, false, true,  false, true, false, false, false, true,  false, true,  false};
+
+constexpr bool isPieceSlidingPiece[13] = {false, false, false, true, true, true, false, false, false, true,  true, true, false};
+
 constexpr std::string_view sideChar = "wb-";
 constexpr std::string_view rankChar = "12345678";
 constexpr std::string_view fileChar = "abcdefgh";
