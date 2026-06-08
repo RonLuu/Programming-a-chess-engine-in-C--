@@ -3,10 +3,12 @@
 constexpr int numKnDir = 8;
 constexpr int numRkDir = 4;
 constexpr int numBsDir = 4;
+constexpr int numKiDir = 8;
 
 constexpr int KnDir[numKnDir] = {-8, -19, -21, -12, 8,  19,  21,  12};
 constexpr int RkDir[numRkDir] = {-1, 1, -10, 10};
 constexpr int BsDir[numBsDir] = {-9, -11, 11, 9};
+constexpr int KiDir[numKiDir] = {-9, -11, 11, 9, -1, 1, -10, 10};
 
 bool isAttackedByPawn(int sq, int side, Board& board) {
     if (side == WHITE) {
@@ -67,6 +69,21 @@ bool isAttackedByBishopQueen(int sq, int side, Board& board) {
 
     return false;
 }
+bool isAttackedByKing(int sq, int side, Board& board) {
+    for (int index = 0; index < numBsDir; index++) {
+        int newSq = sq + BsDir[index];
+        int curPiece = board.squareToPiece[newSq];
+
+        if (curPiece != OFFBOARD) {
+            if (isKing[curPiece] && pieceColor[curPiece] == side) {
+                return true;
+            }
+            break;
+        }
+    }
+
+    return false;
+}
 
 bool isSqBeingAttacked(int sq, int side, Board &board) {
     assert(isSqOnBoard(sq));
@@ -76,5 +93,6 @@ bool isSqBeingAttacked(int sq, int side, Board &board) {
     return isAttackedByPawn(sq, side, board) ||
            isAttackedByKnight(sq, side, board) ||
            isAttackedByRookQueen(sq, side, board) ||
-           isAttackedByBishopQueen(sq, side, board);
+           isAttackedByBishopQueen(sq, side, board) ||
+           isAttackedByKing(sq, side, board);
 }
