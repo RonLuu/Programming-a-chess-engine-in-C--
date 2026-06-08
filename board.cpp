@@ -85,14 +85,12 @@ std::string_view parsePosition(std::string_view fen, Board& board) {
 
     return fen;
 }
-
 std::string_view parseSide(std::string_view fen, Board& board) {
     assert(fen[0] == 'w' || fen[0] == 'b');
     board.side = (fen[0] == 'w') ? WHITE : BLACK;
     fen.remove_prefix(2);
     return fen;
 }
-
 std::string_view parseCastlePermission(std::string_view fen, Board& board) {
     for (int i = 0; i < 4; i++)
     {
@@ -115,7 +113,6 @@ std::string_view parseCastlePermission(std::string_view fen, Board& board) {
 
     return fen;
 }
-
 std::string_view parseEnPassant(std::string_view fen, Board& board) {
     int rank;
     int file;
@@ -214,6 +211,7 @@ void checkPawnBit(Board& board) {
                board.squareToPiece[sq64To120[sq64]] == wP);
     }
 }
+
 void hashPieces(U64& key, Board&board) {
     for (int curSq = 0; curSq < NUM_SML_SQ; curSq++)
     {
@@ -277,7 +275,6 @@ void updateListMaterial(Board& board) {
     }
 }
 
-
 U64 generateHashKey(Board&board) {
     U64 key = 0;
     hashPieces(key, board);
@@ -287,12 +284,19 @@ U64 generateHashKey(Board&board) {
     return key;
 }
 
-void Board::checkBoard() {
+bool Board::checkBoard() {
     checkPiecePosition(*this);
     checkNumberOfPiece(*this);
     checkNumberOfSpecialPiece(*this);
     checkMaterialPoint(*this);
     checkPawnBit(*this);
+
+    assert(side == WHITE || side == BLACK);
+    assert(enPasSq == NO_SQ || sqToRank[enPasSq] == RANK_3 || sqToRank[enPasSq] == RANK_6);
+    assert(squareToPiece[kingSq[WHITE]] == wK);
+    assert(squareToPiece[kingSq[BLACK]] == bK);
+
+    return true;
 }
 
 void Board::printBoard() {
@@ -324,7 +328,6 @@ void Board::printBoard() {
               << std::endl;
     std::cout << "HashKey: " << std::hex << std::uppercase << hashkey << std::dec << std::endl << std::endl;
 }
-
 void Board::parseFen(std::string_view fen) {
     resetBoard();
 
@@ -337,7 +340,6 @@ void Board::parseFen(std::string_view fen) {
 
     updateListMaterial(*this);
 }
-
 void Board::resetBoard() {
     // Set all the square to null piece
     for (int i = 0; i < NUM_BIG_SQ; i++)
