@@ -1,5 +1,9 @@
 #include "attack.hpp"
 
+constexpr int numKnDir = 8;
+
+constexpr int KnDir[numKnDir] = {-8, -19, -21, -12, 8, 19, 21, 12};
+
 bool isAttackedByPawn(int sq, int side, Board& board) {
     if (side == WHITE) {
         if (board.squareToPiece[sq - 11] == wP || board.squareToPiece[sq - 9] == wP) {
@@ -12,11 +16,20 @@ bool isAttackedByPawn(int sq, int side, Board& board) {
     }
     return false;
 }
+bool isAttackedByKnight(int sq, int side, Board& board) {
+    for (int knDir = 0; knDir < numKnDir; knDir++) {
+        int piece = board.squareToPiece[sq+knDir];
+        if (isPieceValid(piece) && isKnight[piece] && pieceColor[piece] == side) {
+            return true;
+        }
+    }
+    return false;
+}
 
 bool isSqBeingAttacked(int sq, int side, Board &board) {
     assert(isSqOnBoard(sq));
     assert(isSideValid(side));
     assert(board.checkBoard());
 
-    return isAttackedByPawn(sq, side, board)
+    return isAttackedByPawn(sq, side, board) || isAttackedByKnight(sq, side, board);
 }
