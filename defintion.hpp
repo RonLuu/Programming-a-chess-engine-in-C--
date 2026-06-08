@@ -1,41 +1,13 @@
 #pragma once
-#include <string_view>
+
+#include <array>
+#include <bit>
 #include <cassert>
 #include <iostream>
+#include <iomanip>
+#include <string_view>
 
 using U64 = unsigned long long;
-
-constexpr int NUM_OF_SIDE = 2;
-constexpr int NUM_BIG_SQ = 120;
-constexpr int NUM_SML_SQ = 64;
-constexpr int NUM_UNIQUE_PIECE = 13;
-constexpr int MAX_NUM_PIECE = 10;
-
-constexpr int pieceToValue[13] = {0, 100, 325, 325, 550, 1000, 50000, 100, 325, 325, 550, 1000, 50000};
-constexpr int pieceColor[13] = {BOTH, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK};
-
-constexpr bool isPieceBig[13] = {false, false, true, true, true, true, true, false, true, true, true, true, true};
-constexpr bool isPieceMaj[13] = {false, false, false, false, true, true, true, false, false, false, true, true, true};
-constexpr bool isPieceMin[13] = {false, false, true, true, false, false, false, false, true, true, false, false, false};
-
-constexpr std::string_view sideChar = "wb-";
-constexpr std::string_view rankChar = "12345678";
-constexpr std::string_view fileChar = "abcdefgh";
-constexpr std::string_view pieceChar = ".PNBRQKpnbrqk";
-constexpr std::string_view START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-
-constexpr int fileRankToSq(int file, int rank)
-{
-    return rank * 10 + (file + 21);
-}
-
-constexpr void setBit(U64& bb, int sq) {
-    bb |= setMask[sq];
-}
-
-constexpr void clrBit(U64& bb, int sq) {
-    bb &= clrMask[sq];
-}
 
 enum { WHITE, BLACK, BOTH };
 enum { WKCA = 1, WQCA = 2, BKCA = 4, BQCA = 8 };
@@ -55,6 +27,51 @@ enum
     NO_SQ, OFFBOARD
 };
 
+constexpr int NUM_OF_SIDE = 2;
+constexpr int NUM_BIG_SQ = 120;
+constexpr int NUM_SML_SQ = 64;
+constexpr int NUM_UNIQUE_PIECE = 13;
+constexpr int MAX_NUM_PIECE = 10;
+constexpr int ILLEGAL_MOVE = 0;
+constexpr int MAX_MOVE_GENERATED = 256;
+
+constexpr int EN_PASSANT_FLAG = 0x40000;
+constexpr int PAWN_START_FLAG = 0x80000;
+constexpr int CASTLE_FLAG = 0x1000000;
+constexpr int PROMOTE_FLAG = 0xF00000;
+constexpr int CAPTURE_FLAG = 0x7C000;
+
+constexpr int pieceToValue[13] = {0, 100, 325, 325, 550, 1000, 50000, 100, 325, 325, 550, 1000, 50000};
+constexpr int pieceColor[13] = {BOTH, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK};
+
+constexpr bool isPieceBig[13] = {false, false, true, true, true, true, true, false, true, true, true, true, true};
+constexpr bool isPieceMaj[13] = {false, false, false, false, true, true, true, false, false, false, true, true, true};
+constexpr bool isPieceMin[13] = {false, false, true, true, false, false, false, false, true, true, false, false, false};
+
+constexpr std::string_view sideChar = "wb-";
+constexpr std::string_view rankChar = "12345678";
+constexpr std::string_view fileChar = "abcdefgh";
+constexpr std::string_view pieceChar = ".PNBRQKpnbrqk";
+constexpr std::string_view START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
+struct UNDO {
+    int move;
+    int castlePermission;
+    int enPasSq;
+    int fiftyMove;
+    U64 hashkey;
+};
+
+struct MOVE {
+    int move;
+    int score;
+};
+
+struct MOVELIST {
+    std::array<MOVE, MAX_MOVE_GENERATED> moves;
+    int currentSize = 0;
+};
+
 // init.c
 extern int sq120To64[NUM_BIG_SQ];
 extern int sq64To120[NUM_SML_SQ];
@@ -71,3 +88,23 @@ void initSq120And64();
 void initBitMasks();
 void initHashKeys();
 void initFileRankBrd();
+
+
+constexpr int fileRankToSq(int file, int rank) {
+    return rank * 10 + (file + 21);
+}
+constexpr bool isSqOnBoard(int sq) {
+    return A1 <= sq && sq <= H8;
+}
+
+inline int popBit(U64& bb) {
+    int sq = std::countr_zero(bb);
+    bb &= bb - 1;
+    return sq;
+}
+inline void setBit(U64& bb, int sq) {
+    bb |= setMask[sq];
+}
+inline void clrBit(U64& bb, int sq) {
+    bb &= clrMask[sq];
+}
