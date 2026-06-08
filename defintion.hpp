@@ -96,6 +96,9 @@ constexpr int fileRankToSq(int file, int rank) {
 constexpr bool isSqOnBoard(int sq) {
     return A1 <= sq && sq <= H8;
 }
+constexpr bool isPieceValid(int piece) {
+    return wP <= piece && piece <= bK;
+}
 
 inline int popBit(U64& bb) {
     int sq = std::countr_zero(bb);

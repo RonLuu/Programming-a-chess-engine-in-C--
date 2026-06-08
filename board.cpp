@@ -218,7 +218,7 @@ void hashPieces(U64& key, Board&board) {
         int sq120 = sq64To120[curSq];
         int curPiece = board.squareToPiece[sq120];
         if (curPiece != EMPTY && curPiece != NO_SQ && curPiece != OFFBOARD) {
-            assert(wP <= curPiece && curPiece <= bK);
+            assert(isPieceValid(curPiece));
             key ^= pieceHashKeys[curPiece][sq120];
         }
     }
