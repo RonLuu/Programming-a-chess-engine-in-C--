@@ -93,9 +93,6 @@ void initFileRankBrd();
 constexpr int fileRankToSq(int file, int rank) {
     return rank * 10 + (file + 21);
 }
-constexpr bool isSqBeingAttacked(int sq) {
-    
-}
 constexpr bool isSqOnBoard(int sq) {
     return A1 <= sq && sq <= H8;
 }
