@@ -99,6 +99,9 @@ constexpr bool isSqOnBoard(int sq) {
 constexpr bool isPieceValid(int piece) {
     return wP <= piece && piece <= bK;
 }
+constexpr bool isSideValid(int side) {
+    return (side == WHITE || side == BLACK);
+}
 
 inline int popBit(U64& bb) {
     int sq = std::countr_zero(bb);
