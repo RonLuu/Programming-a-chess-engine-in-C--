@@ -210,3 +210,12 @@ void printBoard(Board &board) {
               << std::dec << std::endl
               << std::endl;
 }
+void printMoveList(MOVELIST &moveList) {
+    printf("Movelist: %d\n", moveList.currentSize);
+
+    for (int index = 0; index < moveList.currentSize; index++) {
+        int move = moveList.moves[index].move;
+        int score = moveList.moves[index].score;
+        printf("Move %d: %s (score: %d)\n", index + 1, moveToStr(move), score);
+    }
+}
