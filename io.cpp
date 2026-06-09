@@ -212,7 +212,7 @@ void printMoveList(MOVELIST &moveList) {
     for (int index = 0; index < moveList.currentSize; index++) {
         int move = moveList.moves[index].move;
         int score = moveList.moves[index].score;
-        std::cout << "Move " << index + 1 << ": " << moveToStr(move)
-                  << " (score: " << score << ")\n";
+        std::cout << "Move " << std::setw(2) << index + 1 << ": " << std::setw(8)
+                  << moveToStr(move) << " (score: " << score << ")\n";
     }
 }
