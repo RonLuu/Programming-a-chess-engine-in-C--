@@ -62,3 +62,34 @@ void clearPiece(int sq, Board &board) {
     board.numPieceOnBoard[piece]--;
     board.pieceSq[piece][foundPieceIndex] = board.pieceSq[piece][board.numPieceOnBoard[piece]];
 }
+void movePiece(int from, int to, Board &board, int piece) {
+    assert(isSqOnBoard(from));
+    assert(isSqOnBoard(to));
+
+    int piece = board.squareToPiece[from];
+    assert(isPieceValid(piece));
+    int color = pieceColor[piece];
+    assert(isSideValid(color));
+
+    hashPiece(piece, from, board);
+    board.squareToPiece[from] = EMPTY;
+    
+    hashPiece(piece, to, board);
+    board.squareToPiece[piece] = piece;
+
+    if (!isPieceBig[piece]) {
+        clrBit(board.pawnBitboard[color], sq120To64[from]);
+        setBit(board.pawnBitboard[color], sq120To64[to]);
+        
+        clrBit(board.pawnBitboard[BOTH], sq120To64[from]);
+        setBit(board.pawnBitboard[BOTH], sq120To64[to]);
+    }
+
+    for (int index = 0; index < board.numPieceOnBoard[piece]; index++) {
+        if (board.pieceSq[piece][index] == from) {
+            board.pieceSq[piece][index] = to;
+            break;
+        }
+    }
+    
+}
