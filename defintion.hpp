@@ -102,9 +102,6 @@ void initFileRankBrd();
 constexpr int fileRankToSq(int file, int rank) {
     return rank * 10 + (file + 21);
 }
-constexpr bool isSqOnBoard(int sq) {
-    return A1 <= sq && sq <= H8;
-}
 constexpr bool isPieceValid(int piece) {
     return wP <= piece && piece <= bK;
 }
@@ -120,7 +117,9 @@ constexpr int moveToTo(int move) {
 constexpr int moveToPromotedPiece(int move) {
     return (move >> 20) & 0xF;
 }
-
+inline bool isSqOnBoard(int sq) {
+    return 0 <= sq120To64[sq] && sq120To64[sq] < NUM_SML_SQ;
+}
 inline int popBit(U64& bb) {
     int sq = std::countr_zero(bb);
     bb &= bb - 1;
