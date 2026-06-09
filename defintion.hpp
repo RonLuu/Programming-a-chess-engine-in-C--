@@ -111,6 +111,12 @@ constexpr bool isPieceValid(int piece) {
 constexpr bool isSideValid(int side) {
     return (side == WHITE || side == BLACK);
 }
+constexpr int moveToFrom(int move) {
+    return move & 0x7F;
+}
+constexpr int moveToTo(int move) {
+    return (move >> 7) & 0x7F;
+}
 
 inline int popBit(U64& bb) {
     int sq = std::countr_zero(bb);
