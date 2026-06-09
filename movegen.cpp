@@ -235,6 +235,40 @@ void generateSlidePieceMoves(Board &board, MOVELIST &moveList) {
         slidePiece = loopSlidePiece[++indexLoop];
     }
 }
+void generateNonSlidePieceMoves(Board &board, MOVELIST &moveList) {
+    int side = board.side;
+    int indexLoop = loopNonSlideIndex[side];
+    int nonSlidePiece = loopNonSlidePiece[indexLoop];
+
+    while (nonSlidePiece != 0) {
+        assert(isPieceValid(nonSlidePiece));
+        int numberOfNonSlidePiece = board.numPieceOnBoard[nonSlidePiece];
+
+        for (int indexNonSlidePiece = 0; indexNonSlidePiece < numberOfNonSlidePiece; indexNonSlidePiece++) {
+            int curSq = board.pieceSq[nonSlidePiece][indexNonSlidePiece];
+            assert(isSqOnBoard(curSq));
+
+            for (int indexDir = 0; indexDir < numDir[nonSlidePiece]; indexDir++) {
+                int dir = pieceDir[nonSlidePiece][indexDir];
+                int nextSq = curSq + dir;
+                if (!isSqOnBoard(nextSq)) {
+                    continue;
+                }
+
+                int piece = board.squareToPiece[nextSq];
+                if (piece == EMPTY)
+                {
+                    int move = makeMove(curSq, nextSq, EMPTY, EMPTY, NO_FLAG);
+                    addQuietMove(board, move, moveList);
+                } else if (pieceColor[piece] == (side ^ 1)) {
+                    int move = makeMove(curSq, nextSq, piece, EMPTY, NO_FLAG);
+                    addCaptureMove(board, move, moveList);
+                }
+            }
+        }
+        nonSlidePiece = loopNonSlidePiece[++indexLoop];
+    }
+}
 
 void generateAllMoves(Board &board, MOVELIST &moveList) {
     

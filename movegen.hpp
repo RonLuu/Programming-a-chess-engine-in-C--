@@ -4,6 +4,9 @@
 constexpr int loopSlidePiece[8] = {wB, wR, wQ, 0, bB, bR, bQ, 0};
 constexpr int loopSlideIndex[2] = {0, 4};
 
+constexpr int loopNonSlidePiece[6] = {wN, wK, 0, bN, bK, 0};
+constexpr int loopNonSlideIndex[2] = {0, 3};
+
 constexpr int numDir[13] = {0, 0, 8, 4, 4, 8, 8, 0, 8, 4, 4, 8, 8};
 
 constexpr int pieceDir[13][8] = {
