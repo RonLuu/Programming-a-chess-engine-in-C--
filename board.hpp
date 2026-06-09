@@ -16,6 +16,7 @@ struct Board {
     int ply;
     
     int historyIndex;
+    UNDO history[MAX_GAME_MOVE];
     
     U64 hashkey;
 
