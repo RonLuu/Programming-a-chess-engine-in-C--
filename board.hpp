@@ -33,7 +33,7 @@ struct Board {
 
 
     bool checkBoard();
-    
+    U64 generateHashKey();
     void resetBoard();
-    void parseFen(std::string_view);
+    void updateListMaterial();
 };
