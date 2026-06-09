@@ -136,6 +136,37 @@ std::string_view parseEnPassant(std::string_view fen, Board &board) {
     fen.remove_prefix(1);
     return fen;
 }
+std::string_view moveToStr(int move) {
+    char moveStr[9];
+
+    int fromSq = moveToFrom(move);
+    int fromFile = sqToFile[fromSq];
+    int fromRank = sqToRank[fromSq];
+
+    int toSq = moveToTo(move);
+    int toFile = sqToFile[toSq];
+    int toRank = sqToRank[toSq];
+
+    int promoted = moveToPromotedPiece(move);
+
+    if (promoted) {
+        char promotedChar = 'q';
+        if (isRookQueen[promoted] && !isBishopQueen[promoted]) {
+            promotedChar = 'r';
+        } else if (!isRookQueen[promoted] && isBishopQueen[promoted]) {
+            promotedChar = 'b';
+        } else if (isKing[promoted]) {
+            promotedChar = 'k';
+        }
+        sprintf(moveStr, "%c%c->%c%c %c", fromFile + 'a', fromRank + '1',
+                toFile + 'a', toRank + '1', promotedChar);
+    } else {
+        sprintf(moveStr, "%c%c->%c%c", fromFile + 'a', fromRank + '1',
+                toFile + 'a', toRank + '1');
+    }
+
+    return moveStr;
+}
 
 void parseFen(Board &board, std::string_view fen) {
     board.resetBoard();
