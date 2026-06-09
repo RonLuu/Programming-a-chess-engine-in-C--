@@ -299,35 +299,6 @@ bool Board::checkBoard() {
     return true;
 }
 
-void Board::printBoard() {
-    std::cout << "\nGame Board:\n";
-    
-    for (int rank = RANK_8; rank >= RANK_1; rank--) {
-        std::cout << rank + 1 << " ";
-        for (int file = FILE_A; file <= FILE_H; file++) {
-            int sq120 = fileRankToSq(file, rank);
-            int curPiece = squareToPiece[sq120];
-            std::cout << std::setw(3) << pieceChar[curPiece];
-        }
-        std::cout << std::endl;
-    }
-
-    std::cout << std::endl << "  ";
-    for (int file = FILE_A; file <= FILE_H; file++) {
-        std::cout << std::setw(3) << static_cast<char>('a' + file);
-    }
-
-    std::cout << std::endl << std::endl;
-    std::cout << "Side: " << sideChar[side] << std::endl;
-    std::cout << "EnPas: " << enPasSq << std::endl;
-    std::cout << "Castle: "
-              << (castlePermission & WKCA ? 'K' : '-')
-              << (castlePermission & WQCA ? 'Q' : '-')
-              << (castlePermission & BKCA ? 'k' : '-')
-              << (castlePermission & BQCA ? 'q' : '-')
-              << std::endl;
-    std::cout << "HashKey: " << std::hex << std::uppercase << hashkey << std::dec << std::endl << std::endl;
-}
 void Board::parseFen(std::string_view fen) {
     resetBoard();
 

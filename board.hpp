@@ -36,5 +36,4 @@ struct Board {
     
     void resetBoard();
     void parseFen(std::string_view);
-    void printBoard();
 };
