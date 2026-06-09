@@ -198,4 +198,44 @@ void generatePawnAndCastleMoves(Board &board, MOVELIST &moveList) {
         }
     }
 }
-void generateAllMoves(Board &board, MOVELIST &moveList) {}
+void generateSlidePieceMoves(Board &board, MOVELIST &moveList) {
+    int side = board.side;
+    int indexLoop = loopSlideIndex[side];
+    int slidePiece = loopSlidePiece[indexLoop];
+
+    while (slidePiece != 0) {
+        assert(isPieceValid(slidePiece));
+        int numberOfSlidePiece = board.numPieceOnBoard[slidePiece];
+
+        for (int indexSlidePiece = 0; indexSlidePiece < numberOfSlidePiece; indexSlidePiece++) {
+            int curSq = board.pieceSq[slidePiece][indexSlidePiece];
+            assert(isSqOnBoard(curSq));
+
+            for (int indexDir = 0; indexDir < numDir[slidePiece]; indexDir++) {
+                int dir = pieceDir[slidePiece][indexDir];
+                int nextSq = curSq + dir;
+
+                while (isSqOnBoard(nextSq)) {
+                    int piece = board.squareToPiece[nextSq];
+                    if (piece == EMPTY) {
+                        int move = makeMove(curSq, nextSq, EMPTY, EMPTY, NO_FLAG);
+                        addQuietMove(board, move, moveList);
+                        nextSq += dir;
+                        continue;
+                    }
+
+                    if (pieceColor[piece] == (side^1)) {
+                        int move = makeMove(curSq, nextSq, piece, EMPTY, NO_FLAG);
+                        addCaptureMove(board, move, moveList);
+                    }
+                    break;
+                }
+            }
+        }
+        slidePiece = loopSlidePiece[++indexLoop];
+    }
+}
+
+void generateAllMoves(Board &board, MOVELIST &moveList) {
+    
+}
