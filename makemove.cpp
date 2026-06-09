@@ -1,6 +1,30 @@
 #include "makemove.hpp"
 
-void clearPiece(int sq, Board& board) {
+void addPiece(int sq, Board &board, int piece) {
+    assert(isPieceValid(piece));
+    assert(isSqOnBoard(sq));
+
+    hashPiece(piece, sq, board);
+    board.squareToPiece[sq] = piece;
+
+    int color = pieceColor[piece];
+    board.materialPoints[color] += pieceToValue[piece];
+
+    if (isPieceBig[piece]) {
+        board.numBigPieces[color]++;
+        if (isPieceMaj[piece]) {
+            board.numMajPieces[color]++;
+        } else {
+            board.numMinPieces[color]++;
+        }
+    } else {
+        setBit(board.pawnBitboard[color], sq120To64[sq]);
+        setBit(board.pawnBitboard[BOTH], sq120To64[sq]);
+    }
+
+    board.pieceSq[piece][board.numPieceOnBoard[piece]++] = sq;
+}
+void clearPiece(int sq, Board &board) {
     assert(isSqOnBoard(sq));
 
     int piece = board.squareToPiece[sq];
