@@ -35,11 +35,12 @@ constexpr int MAX_NUM_PIECE = 10;
 constexpr int ILLEGAL_MOVE = 0;
 constexpr int MAX_MOVE_GENERATED = 256;
 
+constexpr int NO_FLAG         = 0;
+constexpr int CAPTURE_FLAG    = 0x7C000;
 constexpr int EN_PASSANT_FLAG = 0x40000;
 constexpr int PAWN_START_FLAG = 0x80000;
-constexpr int CASTLE_FLAG = 0x1000000;
-constexpr int PROMOTE_FLAG = 0xF00000;
-constexpr int CAPTURE_FLAG = 0x7C000;
+constexpr int PROMOTE_FLAG    = 0xF00000;
+constexpr int CASTLE_FLAG     = 0x1000000;
 
 constexpr int pieceToValue[13] = {0, 100, 325, 325, 550, 1000, 50000, 100, 325, 325, 550, 1000, 50000};
 constexpr int pieceColor[13] = {BOTH, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK};
@@ -48,11 +49,11 @@ constexpr bool isPieceBig[13] = {false, false, true, true, true, true, true, fal
 constexpr bool isPieceMaj[13] = {false, false, false, false, true, true, true, false, false, false, true, true, true};
 constexpr bool isPieceMin[13] = {false, false, true, true, false, false, false, false, true, true, false, false, false};
 
-constexpr bool isPiecePawn[13] = {false, true,  false, false, false, false, false, true,  false, false, false, false, false};
-constexpr bool isPieceKnight[13] = {false, false, true,  false, false, false, false, false, true,  false, false, false, false};
-constexpr bool isPieceKing[13] = {false, false, false, false, false, false, true, false, false, false, false, false, true};
-constexpr bool isPieceRookQueen[13] = {false, false, false, false, true, true, false, false, false, false, true,  true, false};
-constexpr bool isPieceBishopQueen[13] = {false, false, false, true,  false, true, false, false, false, true,  false, true,  false};
+constexpr bool isPawn[13] = {false, true,  false, false, false, false, false, true,  false, false, false, false, false};
+constexpr bool isKnight[13] = {false, false, true,  false, false, false, false, false, true,  false, false, false, false};
+constexpr bool isKing[13] = {false, false, false, false, false, false, true, false, false, false, false, false, true};
+constexpr bool isRookQueen[13] = {false, false, false, false, true, true, false, false, false, false, true,  true, false};
+constexpr bool isBishopQueen[13] = {false, false, false, true,  false, true, false, false, false, true,  false, true,  false};
 
 constexpr bool isPieceSlidingPiece[13] = {false, false, false, true, true, true, false, false, false, true,  true, true, false};
 
