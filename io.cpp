@@ -136,33 +136,29 @@ std::string_view parseEnPassant(std::string_view fen, Board &board) {
     fen.remove_prefix(1);
     return fen;
 }
-std::string_view moveToStr(int move) {
-    char moveStr[9];
 
+std::string moveToStr(int move) {
     int fromSq = moveToFrom(move);
-    int fromFile = sqToFile[fromSq];
-    int fromRank = sqToRank[fromSq];
-
     int toSq = moveToTo(move);
-    int toFile = sqToFile[toSq];
-    int toRank = sqToRank[toSq];
+
+    char fromFile = sqToFile[fromSq] + 'a';
+    char fromRank = sqToRank[fromSq] + '1';
+    char toFile = sqToFile[toSq] + 'a';
+    char toRank = sqToRank[toSq] + '1';
+
+    std::string moveStr = {fromFile, fromRank, '-', '>', toFile, toRank};
 
     int promoted = moveToPromotedPiece(move);
-
     if (promoted) {
         char promotedChar = 'q';
         if (isRookQueen[promoted] && !isBishopQueen[promoted]) {
             promotedChar = 'r';
         } else if (!isRookQueen[promoted] && isBishopQueen[promoted]) {
             promotedChar = 'b';
-        } else if (isKing[promoted]) {
-            promotedChar = 'k';
+        } else if (isKnight[promoted]) {
+            promotedChar = 'n';
         }
-        sprintf(moveStr, "%c%c->%c%c %c", fromFile + 'a', fromRank + '1',
-                toFile + 'a', toRank + '1', promotedChar);
-    } else {
-        sprintf(moveStr, "%c%c->%c%c", fromFile + 'a', fromRank + '1',
-                toFile + 'a', toRank + '1');
+        moveStr += promotedChar;
     }
 
     return moveStr;
@@ -211,11 +207,12 @@ void printBoard(Board &board) {
               << std::endl;
 }
 void printMoveList(MOVELIST &moveList) {
-    printf("Movelist: %d\n", moveList.currentSize);
+    std::cout << "Movelist: " << moveList.currentSize << "\n";
 
     for (int index = 0; index < moveList.currentSize; index++) {
         int move = moveList.moves[index].move;
         int score = moveList.moves[index].score;
-        printf("Move %d: %s (score: %d)\n", index + 1, moveToStr(move), score);
+        std::cout << "Move " << index + 1 << ": " << moveToStr(move)
+                  << " (score: " << score << ")\n";
     }
 }
