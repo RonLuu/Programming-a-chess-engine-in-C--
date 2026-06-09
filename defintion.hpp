@@ -117,6 +117,9 @@ constexpr int moveToFrom(int move) {
 constexpr int moveToTo(int move) {
     return (move >> 7) & 0x7F;
 }
+constexpr int moveToPromotedPiece(int move) {
+    return (move >> 20) & 0xF;
+}
 
 inline int popBit(U64& bb) {
     int sq = std::countr_zero(bb);
