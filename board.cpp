@@ -20,7 +20,7 @@ void checkNumberOfPiece(Board& board) {
         piece_counter[curPiece] ++;
     }
 
-    for (int i = 0; i < NUM_UNIQUE_PIECE; i++) {
+    for (int i = wP; i <= bK; i++) {
         assert(piece_counter[i] == board.numPieceOnBoard[i]);
     }
 }
