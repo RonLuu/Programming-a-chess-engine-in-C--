@@ -271,5 +271,10 @@ void generateNonSlidePieceMoves(Board &board, MOVELIST &moveList) {
 }
 
 void generateAllMoves(Board &board, MOVELIST &moveList) {
-    
+    assert(board.checkBoard());
+    moveList.currentSize = 0;
+
+    generatePawnAndCastleMoves(board, moveList);
+    generateSlidePieceMoves(board, moveList);
+    generateNonSlidePieceMoves(board, moveList);
 }
