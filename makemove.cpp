@@ -231,3 +231,95 @@ bool makeMove(Board &board, int move) {
     return true;
 }
 
+void undoHashEnPassant(UNDO undo, Board &board) {
+    if (board.enPasSq != NO_SQ) hashEnPassant(board);
+    board.enPasSq = undo.enPasSq;
+    if (board.enPasSq != NO_SQ) hashEnPassant(board);
+}
+void undoHashCastle(UNDO undo, Board &board) {
+    hashCastle(board);
+    board.castlePermission = undo.castlePermission;
+    hashCastle(board);
+}
+void undoEnPassant(int move, Board &board) {
+    int to = moveToTo(move);
+    if (board.side == WHITE) {
+        addPiece(to - 10, board, bP);
+    } else {
+        addPiece(to - 10, board, wP);
+    }
+}
+void undoCastle(int move, Board &board) {
+    int to = moveToTo(move);
+    switch (to) {
+        case C1: movePiece(D1, A1, board); break;
+        case C8: movePiece(D8, A8, board); break;
+        case G1: movePiece(F1, H1, board); break;
+        case G8: movePiece(F8, H8, board); break;
+        default: assert(false); break;
+    }
+}
+void undoKingSq(int move, Board &board) {
+    int from = moveToFrom(move);
+    if (isKing[board.squareToPiece[from]]) {
+        board.kingSq[board.side] = from;
+    }
+}
+void undoCapturedPiece(int move, Board &board) {
+    int to = moveToTo(move);
+    int capturedPiece = moveToCapturedPiece(move);
+    if (capturedPiece != EMPTY) {
+        assert(isPieceValid(capturedPiece));
+        addPiece(to, board, capturedPiece);
+    }
+}
+void undoPromotion(int move, Board &board) {
+    int from = moveToFrom(move);
+    int promotedPiece = moveToPromotedPiece(move);
+    if (promotedPiece != EMPTY) {
+        assert(isPieceValid(promotedPiece) && !isPawn[promotedPiece] &&
+               !isKing[promotedPiece]);
+        clearPiece(from, board);
+        addPiece(from, board, (pieceColor[promotedPiece] == WHITE ? wP : bP));
+    }
+}
+
+bool takeMove(Board &board) {
+    assert(board.checkBoard());
+    board.historyIndex--;
+    assert(board.historyIndex >= 0 && board.historyIndex < MAX_GAME_MOVE);
+
+    board.ply--;
+    assert(board.ply >= 0 && board.ply < MAX_MOVE_GENERATED);
+
+    UNDO undo = board.history[board.historyIndex]; 
+    int move = undo.move;
+
+    int from = moveToFrom(move);
+    assert(isSqOnBoard(from));
+    
+    int to   = moveToTo(to);
+    assert(isSqOnBoard(to));
+
+    board.fiftyMove = undo.fiftyMove;
+
+    undoHashEnPassant(undo, board);
+    undoHashCastle(undo, board);
+    
+    board.side ^= 1;
+    hashSide(board);
+
+    if (move & EN_PASSANT_FLAG) {
+        undoEnPassant(move, board);
+    } else if (move & CASTLE_FLAG) {
+        undoCastle(move, board);
+    }
+
+    movePiece(to, from, board);
+
+    undoKingSq(move, board);
+    undoCapturedPiece(move, board);
+    undoPromotion(move, board);
+    
+    assert(board.checkBoard());
+}

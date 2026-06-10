@@ -29,3 +29,4 @@ inline void hashEnPassant(Board &board) {
     board.hashkey ^= pieceHashKeys[EMPTY][board.enPasSq];
 }
 bool makeMove(Board &board, int move);
+bool takeMove(Board &board);
