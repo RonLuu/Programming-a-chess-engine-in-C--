@@ -115,6 +115,9 @@ constexpr int moveToFrom(int move) {
 constexpr int moveToTo(int move) {
     return (move >> 7) & 0x7F;
 }
+constexpr int moveToCapturedPiece(int move) {
+    return (move >> 14) & 0xF;
+}
 constexpr int moveToPromotedPiece(int move) {
     return (move >> 20) & 0xF;
 }
