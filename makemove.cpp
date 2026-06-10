@@ -62,7 +62,7 @@ void clearPiece(int sq, Board &board) {
     board.numPieceOnBoard[piece]--;
     board.pieceSq[piece][foundPieceIndex] = board.pieceSq[piece][board.numPieceOnBoard[piece]];
 }
-void movePiece(int from, int to, Board &board, int piece) {
+void movePiece(int from, int to, Board &board) {
     assert(isSqOnBoard(from));
     assert(isSqOnBoard(to));
 
