@@ -101,14 +101,17 @@ void recordHistory(int move, Board &board) {
     board.history[board.historyIndex].enPasSq = board.enPasSq;
     board.history[board.historyIndex].castlePermission = board.castlePermission;
 }
-void handleEnPassant(int side, int to, Board &board) {
+void handleEnPassant(int move, Board &board) {
+    int side = board.side;
+    int to = moveToTo(move);
     if (side == WHITE) {
         clearPiece(to - 10, board);
     } else {
         clearPiece(to + 10, board);
     }
 }
-void handleCastle(int to, Board &board) {
+void handleCastle(int move, Board &board) {
+    int to = moveToTo(move);
     switch (to)
     {
         case C1: movePiece(A1, D1, board); break;
@@ -118,13 +121,19 @@ void handleCastle(int to, Board &board) {
         default: assert(false); break;
     }
 }
-void handleHashCastle(int from, int to, Board &board) {
+void handleHashCastle(int move, Board &board) {
+    int from = moveToFrom(move);
+    int to = moveToTo(move);
+
     hashCastle(board);
     board.castlePermission &= castlePermission[from];
     board.castlePermission &= castlePermission[to];
     hashCastle(board);
 }
-void handleHashEnPassant(int move, int from, int side, Board &board) {
+void handleHashEnPassant(int move, Board &board) {
+    int from = moveToFrom(move);
+    int side = board.side;
+
     if (board.enPasSq != NO_SQ) {
         hashEnPassant(board);
         board.enPasSq = NO_SQ;
@@ -145,7 +154,8 @@ void handleHashEnPassant(int move, int from, int side, Board &board) {
         }
     }
 }
-void handleCapturedPiece(int move, int to, Board &board) {
+void handleCapturedPiece(int move, Board &board) {
+    int to = moveToTo(move);
     int capturedPiece = moveToCapturedPiece(move);
     if (capturedPiece != EMPTY) {
         assert(isPieceValid(capturedPiece));
@@ -153,12 +163,14 @@ void handleCapturedPiece(int move, int to, Board &board) {
         board.fiftyMove = 0;
     }
 }
-void handleKingSq(int to, Board &board) {
+void handleKingSq(int move, Board &board) {
+    int to = moveToTo(move);
     if (isKing[board.squareToPiece[to]]) {
         board.kingSq[board.side] = to;
     }
 }
-void handlePromotion(int move, int to, Board &board) {
+void handlePromotion(int move, Board &board) {
+    int to = moveToTo(move);
     int promotedPiece = moveToPromotedPiece(move);
     if (promotedPiece != EMPTY) {
         assert(isPieceValid(promotedPiece) && !isPawn[promotedPiece] &&
@@ -188,18 +200,18 @@ bool makeMove(Board &board, int move) {
     board.fiftyMove++;
 
     if (move & EN_PASSANT_FLAG) {
-        handleEnPassant(side, to, board);
+        handleEnPassant(move, board);
     } else if (move & CASTLE_FLAG) {
-        handleCastle(to, board);
+        handleCastle(move, board);
     }
 
-    handleHashCastle(from, to, board);
-    handleHashEnPassant(move, from, side, board);
+    handleHashCastle(move, board);
+    handleHashEnPassant(move, board);
 
-    handleCapturedPiece(move, to, board);
+    handleCapturedPiece(move, board);
     movePiece(from, to, board);
-    handleKingSq(to, board);
-    handlePromotion(move, to, board);
+    handleKingSq(move, board);
+    handlePromotion(move, board);
     
     board.side ^= 1;
     hashSide(board);
@@ -218,3 +230,4 @@ bool makeMove(Board &board, int move) {
     }
     return true;
 }
+
