@@ -18,8 +18,8 @@ constexpr int castlePermission[120] = {
 inline void hashPiece(int piece, int sq, Board &board) {
     board.hashkey ^= pieceHashKeys[piece][sq];
 }
-inline void hashCastle(int castlePerm, Board &board) {
-    board.hashkey ^= castleHashKeys[castlePerm];
+inline void hashCastle(Board &board) {
+    board.hashkey ^= castleHashKeys[board.castlePermission];
 }
 inline void hashSide(Board &board) {
     board.hashkey ^= sideHashKey;
