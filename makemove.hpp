@@ -1,4 +1,5 @@
 #include "board.hpp"
+#include "attack.hpp"
 
 constexpr int castlePermission[120] = {
     15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
