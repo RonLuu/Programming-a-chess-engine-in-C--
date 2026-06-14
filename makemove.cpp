@@ -75,7 +75,7 @@ void movePiece(int from, int to, Board &board) {
     board.squareToPiece[from] = EMPTY;
     
     hashPiece(piece, to, board);
-    board.squareToPiece[piece] = piece;
+    board.squareToPiece[to] = piece;
 
     if (!isPieceBig[piece]) {
         clrBit(board.pawnBitboard[color], sq120To64[from]);
