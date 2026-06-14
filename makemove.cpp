@@ -225,7 +225,7 @@ bool makeMove(Board &board, int move) {
     assert(board.checkBoard());
 
     if (isSqBeingAttacked(board.kingSq[side], board.side, board)) {
-        // takeMove(board);
+        takeMove(board);
         return false;
     }
     return true;
@@ -298,7 +298,7 @@ void takeMove(Board &board) {
     int from = moveToFrom(move);
     assert(isSqOnBoard(from));
     
-    int to   = moveToTo(to);
+    int to   = moveToTo(move);
     assert(isSqOnBoard(to));
 
     board.fiftyMove = undo.fiftyMove;
