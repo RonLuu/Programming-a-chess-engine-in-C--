@@ -56,7 +56,7 @@ void clearPiece(int sq, Board &board) {
         }
     }
     
-    assert(foundPieceIndex == -1);
+    assert(foundPieceIndex != -1);
     assert(0 <= foundPieceIndex && foundPieceIndex < MAX_NUM_PIECE);
 
     board.numPieceOnBoard[piece]--;
@@ -159,6 +159,7 @@ void applyCapturedPiece(int move, Board &board) {
     int capturedPiece = moveToCapturedPiece(move);
     if (capturedPiece != EMPTY) {
         assert(isPieceValid(capturedPiece));
+        if (to == 62) std::cout << "Holer" << std::endl;
         clearPiece(to, board);
         board.fiftyMove = 0;
     }
