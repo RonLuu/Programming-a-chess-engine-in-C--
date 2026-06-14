@@ -25,7 +25,7 @@ constexpr int pieceDir[13][8] = {
     {-1, -10, 1, 10, -9, -11, 11, 9},   // King direction
 };
 
-constexpr int makeMove(int from, int to, int captured, int promoted, int FLAG) {
+constexpr int createMove(int from, int to, int captured, int promoted, int FLAG) {
     return from | (to << 7) | (captured << 14) | (promoted << 20) | FLAG;
 }
 

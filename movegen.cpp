@@ -26,13 +26,13 @@ void addBlackPawnMove(Board &board, int from, MOVELIST &moveList) {
     assert(isSqOnBoard(to));
 
     if (sqToRank[from] != RANK_2) {
-        int move = makeMove(from, to, EMPTY, EMPTY, NO_FLAG);
+        int move = createMove(from, to, EMPTY, EMPTY, NO_FLAG);
         addQuietMove(board, move, moveList);
     } else {
-        int promoteQ = makeMove(from, to, EMPTY, wQ, NO_FLAG);
-        int promoteR = makeMove(from, to, EMPTY, wR, NO_FLAG);
-        int promoteN = makeMove(from, to, EMPTY, wN, NO_FLAG);
-        int promoteB = makeMove(from, to, EMPTY, wB, NO_FLAG);
+        int promoteQ = createMove(from, to, EMPTY, wQ, NO_FLAG);
+        int promoteR = createMove(from, to, EMPTY, wR, NO_FLAG);
+        int promoteN = createMove(from, to, EMPTY, wN, NO_FLAG);
+        int promoteB = createMove(from, to, EMPTY, wB, NO_FLAG);
 
         addQuietMove(board, promoteQ, moveList);
         addQuietMove(board, promoteR, moveList);
@@ -46,13 +46,13 @@ void addBlackPawnCaptureMove(Board &board, int from, int to, int capturedPiece, 
     assert(isSqOnBoard(to));
 
     if (sqToRank[from] != RANK_2) {
-        int move = makeMove(from, to, capturedPiece, EMPTY, NO_FLAG);
+        int move = createMove(from, to, capturedPiece, EMPTY, NO_FLAG);
         addCaptureMove(board, move, moveList);
     } else {
-        int promoteQ = makeMove(from, to, capturedPiece, wQ, NO_FLAG);
-        int promoteR = makeMove(from, to, capturedPiece, wR, NO_FLAG);
-        int promoteN = makeMove(from, to, capturedPiece, wN, NO_FLAG);
-        int promoteB = makeMove(from, to, capturedPiece, wB, NO_FLAG);
+        int promoteQ = createMove(from, to, capturedPiece, wQ, NO_FLAG);
+        int promoteR = createMove(from, to, capturedPiece, wR, NO_FLAG);
+        int promoteN = createMove(from, to, capturedPiece, wN, NO_FLAG);
+        int promoteB = createMove(from, to, capturedPiece, wB, NO_FLAG);
 
         addCaptureMove(board, promoteQ, moveList);
         addCaptureMove(board, promoteR, moveList);
@@ -68,13 +68,13 @@ void addWhitePawnMove(Board &board, int from, MOVELIST &moveList) {
     assert(isSqOnBoard(to));
 
     if (sqToRank[from] != RANK_7) {
-        int move = makeMove(from, to, EMPTY, EMPTY, NO_FLAG);
+        int move = createMove(from, to, EMPTY, EMPTY, NO_FLAG);
         addQuietMove(board, move, moveList);
     } else {
-        int promoteQ = makeMove(from, to, EMPTY, wQ, NO_FLAG);
-        int promoteR = makeMove(from, to, EMPTY, wR, NO_FLAG);
-        int promoteN = makeMove(from, to, EMPTY, wN, NO_FLAG);
-        int promoteB = makeMove(from, to, EMPTY, wB, NO_FLAG);
+        int promoteQ = createMove(from, to, EMPTY, wQ, NO_FLAG);
+        int promoteR = createMove(from, to, EMPTY, wR, NO_FLAG);
+        int promoteN = createMove(from, to, EMPTY, wN, NO_FLAG);
+        int promoteB = createMove(from, to, EMPTY, wB, NO_FLAG);
 
         addQuietMove(board, promoteQ, moveList);
         addQuietMove(board, promoteR, moveList);
@@ -88,13 +88,13 @@ void addWhitePawnCaptureMove(Board &board, int from, int to, int capturedPiece, 
     assert(isSqOnBoard(to));
 
     if (sqToRank[from] != RANK_7) {
-        int move = makeMove(from, to, capturedPiece, EMPTY, NO_FLAG);
+        int move = createMove(from, to, capturedPiece, EMPTY, NO_FLAG);
         addCaptureMove(board, move, moveList);
     } else {
-        int promoteQ = makeMove(from, to, capturedPiece, wQ, NO_FLAG);
-        int promoteR = makeMove(from, to, capturedPiece, wR, NO_FLAG);
-        int promoteN = makeMove(from, to, capturedPiece, wN, NO_FLAG);
-        int promoteB = makeMove(from, to, capturedPiece, wB, NO_FLAG);
+        int promoteQ = createMove(from, to, capturedPiece, wQ, NO_FLAG);
+        int promoteR = createMove(from, to, capturedPiece, wR, NO_FLAG);
+        int promoteN = createMove(from, to, capturedPiece, wN, NO_FLAG);
+        int promoteB = createMove(from, to, capturedPiece, wB, NO_FLAG);
 
         addCaptureMove(board, promoteQ, moveList);
         addCaptureMove(board, promoteR, moveList);
@@ -113,7 +113,7 @@ void generatePawnAndCastleMoves(Board &board, MOVELIST &moveList) {
             if (board.squareToPiece[curSq + 10] == EMPTY) {
                 addWhitePawnMove(board, curSq, moveList);
                 if (sqToRank[curSq] == RANK_2 && board.squareToPiece[curSq + 20] == EMPTY) {
-                    int move = makeMove(curSq, curSq + 20, EMPTY, EMPTY, PAWN_START_FLAG);
+                    int move = createMove(curSq, curSq + 20, EMPTY, EMPTY, PAWN_START_FLAG);
                     addQuietMove(board, move, moveList);
                 }
             }
@@ -127,11 +127,11 @@ void generatePawnAndCastleMoves(Board &board, MOVELIST &moveList) {
             }
             if (board.enPasSq != NO_SQ) {
                 if (curSq + 9 == board.enPasSq) {
-                    int move = makeMove(curSq, curSq + 9, EMPTY, EMPTY, EN_PASSANT_FLAG);
+                    int move = createMove(curSq, curSq + 9, EMPTY, EMPTY, EN_PASSANT_FLAG);
                     addEnPassantMove(board, move, moveList);
                 }
                 if (curSq + 11 == board.enPasSq) {
-                    int move = makeMove(curSq, curSq + 11, EMPTY, EMPTY, EN_PASSANT_FLAG);
+                    int move = createMove(curSq, curSq + 11, EMPTY, EMPTY, EN_PASSANT_FLAG);
                     addEnPassantMove(board, move, moveList);
                 }
             }
@@ -139,7 +139,7 @@ void generatePawnAndCastleMoves(Board &board, MOVELIST &moveList) {
         if (board.castlePermission & WKCA) {
             if (board.squareToPiece[F1] == EMPTY && board.squareToPiece[G1] == EMPTY) {
                 if (!isSqBeingAttacked(F1, BLACK, board) && !isSqBeingAttacked(G1, BLACK, board)) {
-                    int move = makeMove(E1, G1, EMPTY, EMPTY, CASTLE_FLAG);
+                    int move = createMove(E1, G1, EMPTY, EMPTY, CASTLE_FLAG);
                     addQuietMove(board, move, moveList);
                 }
             }
@@ -147,7 +147,7 @@ void generatePawnAndCastleMoves(Board &board, MOVELIST &moveList) {
         if (board.castlePermission & WQCA) {
             if (board.squareToPiece[D1] == EMPTY && board.squareToPiece[C1] == EMPTY && board.squareToPiece[B1] == EMPTY) {
                 if (!isSqBeingAttacked(E1, BLACK, board) && !isSqBeingAttacked(D1, BLACK, board)) {
-                    int move = makeMove(E1, C1, EMPTY, EMPTY, CASTLE_FLAG);
+                    int move = createMove(E1, C1, EMPTY, EMPTY, CASTLE_FLAG);
                     addQuietMove(board, move, moveList);
                 }
             }
@@ -159,7 +159,7 @@ void generatePawnAndCastleMoves(Board &board, MOVELIST &moveList) {
             if (board.squareToPiece[curSq - 10] == EMPTY) {
                 addBlackPawnMove(board, curSq, moveList);
                 if (sqToRank[curSq] == RANK_7 && board.squareToPiece[curSq - 20] == EMPTY) {
-                    int move = makeMove(curSq, curSq - 20, EMPTY, EMPTY, PAWN_START_FLAG);
+                    int move = createMove(curSq, curSq - 20, EMPTY, EMPTY, PAWN_START_FLAG);
                     addQuietMove(board, move, moveList);
                 }
             }
@@ -171,11 +171,11 @@ void generatePawnAndCastleMoves(Board &board, MOVELIST &moveList) {
             }
             if (board.enPasSq != NO_SQ) {
                 if (curSq - 9 == board.enPasSq) {
-                    int move = makeMove(curSq, curSq - 9, EMPTY, EMPTY, EN_PASSANT_FLAG);
+                    int move = createMove(curSq, curSq - 9, EMPTY, EMPTY, EN_PASSANT_FLAG);
                     addEnPassantMove(board, move, moveList);
                 }
                 if (curSq - 11 == board.enPasSq) {
-                    int move = makeMove(curSq, curSq - 11, EMPTY, EMPTY, EN_PASSANT_FLAG);
+                    int move = createMove(curSq, curSq - 11, EMPTY, EMPTY, EN_PASSANT_FLAG);
                     addEnPassantMove(board, move, moveList);
                 }
             }
@@ -183,7 +183,7 @@ void generatePawnAndCastleMoves(Board &board, MOVELIST &moveList) {
         if (board.castlePermission & BKCA) {
             if (board.squareToPiece[F8] == EMPTY && board.squareToPiece[G8] == EMPTY) {
                 if (!isSqBeingAttacked(F8, WHITE, board) && !isSqBeingAttacked(G8, WHITE, board)) {
-                    int move = makeMove(E8, G8, EMPTY, EMPTY, CASTLE_FLAG);
+                    int move = createMove(E8, G8, EMPTY, EMPTY, CASTLE_FLAG);
                     addQuietMove(board, move, moveList);
                 }
             }
@@ -191,7 +191,7 @@ void generatePawnAndCastleMoves(Board &board, MOVELIST &moveList) {
         if (board.castlePermission & BQCA) {
             if (board.squareToPiece[D8] == EMPTY && board.squareToPiece[C8] == EMPTY && board.squareToPiece[B8] == EMPTY) {
                 if (!isSqBeingAttacked(E8, WHITE, board) && !isSqBeingAttacked(D8, WHITE, board)) {
-                    int move = makeMove(E8, C8, EMPTY, EMPTY, CASTLE_FLAG);
+                    int move = createMove(E8, C8, EMPTY, EMPTY, CASTLE_FLAG);
                     addQuietMove(board, move, moveList);
                 }
             }
@@ -218,14 +218,14 @@ void generateSlidePieceMoves(Board &board, MOVELIST &moveList) {
                 while (isSqOnBoard(nextSq)) {
                     int piece = board.squareToPiece[nextSq];
                     if (piece == EMPTY) {
-                        int move = makeMove(curSq, nextSq, EMPTY, EMPTY, NO_FLAG);
+                        int move = createMove(curSq, nextSq, EMPTY, EMPTY, NO_FLAG);
                         addQuietMove(board, move, moveList);
                         nextSq += dir;
                         continue;
                     }
 
                     if (pieceColor[piece] == (side^1)) {
-                        int move = makeMove(curSq, nextSq, piece, EMPTY, NO_FLAG);
+                        int move = createMove(curSq, nextSq, piece, EMPTY, NO_FLAG);
                         addCaptureMove(board, move, moveList);
                     }
                     break;
@@ -258,10 +258,10 @@ void generateNonSlidePieceMoves(Board &board, MOVELIST &moveList) {
                 int piece = board.squareToPiece[nextSq];
                 if (piece == EMPTY)
                 {
-                    int move = makeMove(curSq, nextSq, EMPTY, EMPTY, NO_FLAG);
+                    int move = createMove(curSq, nextSq, EMPTY, EMPTY, NO_FLAG);
                     addQuietMove(board, move, moveList);
                 } else if (pieceColor[piece] == (side ^ 1)) {
-                    int move = makeMove(curSq, nextSq, piece, EMPTY, NO_FLAG);
+                    int move = createMove(curSq, nextSq, piece, EMPTY, NO_FLAG);
                     addCaptureMove(board, move, moveList);
                 }
             }
