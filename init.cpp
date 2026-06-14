@@ -20,17 +20,10 @@ U64 castleHashKeys[16];
 
 std::mt19937_64 rng(std::random_device{}());
 
-void allInit() {
-    initSq120And64();
-    initBitMasks();
-    initHashKeys();
-    initFileRankBrd();
-}
-
 void initSq120And64() {
     int index_64 = 0;
 
-    for (int i = 0; i < NUM_BIG_SQ; i ++) {
+    for (int i = 0; i < NUM_BIG_SQ; i++) {
         sq120To64[i] = NUM_SML_SQ;
     }
 
@@ -43,48 +36,47 @@ void initSq120And64() {
         }
     }
 }
-
 void initBitMasks() {
     for (int index = 0; index < NUM_SML_SQ; index++) {
         setMask[index] = 0ULL;
         clrMask[index] = 0ULL;
     }
-    
+
     for (int index = 0; index < NUM_SML_SQ; index++) {
         setMask[index] |= (1ULL << index);
         clrMask[index] |= ~(1ULL << index);
     }
 }
-
 void initHashKeys() {
-    for (int p = 0; p < NUM_UNIQUE_PIECE; p++)
-    {
-        for (int sq = 0; sq < NUM_BIG_SQ; sq++)
-        {
+    for (int p = 0; p < NUM_UNIQUE_PIECE; p++) {
+        for (int sq = 0; sq < NUM_BIG_SQ; sq++) {
             pieceHashKeys[p][sq] = rng();
         }
     }
 
     sideHashKey = rng();
-    for (int index = 0; index < 16; index++)
-    {
+    for (int index = 0; index < 16; index++) {
         castleHashKeys[index] = rng();
     }
 }
-
 void initFileRankBrd() {
-    for (int i = 0; i < NUM_BIG_SQ; i++)
-    {
+    for (int i = 0; i < NUM_BIG_SQ; i++) {
         sqToRank[i] = RANK_NONE;
         sqToFile[i] = FILE_NONE;
     }
-    
-    for (int i = 0; i < NUM_BIG_SQ; i++)
-    {
+
+    for (int i = 0; i < NUM_BIG_SQ; i++) {
         int sq64 = sq120To64[i];
         if (sq64 != NUM_SML_SQ) {
             sqToRank[i] = sq64 / 8;
             sqToFile[i] = sq64 % 8;
         }
-    }        
+    }
+}
+
+void allInit() {
+    initSq120And64();
+    initBitMasks();
+    initHashKeys();
+    initFileRankBrd();
 }
