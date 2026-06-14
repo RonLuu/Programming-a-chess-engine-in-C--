@@ -284,7 +284,7 @@ void undoPromotion(int move, Board &board) {
     }
 }
 
-bool takeMove(Board &board) {
+void takeMove(Board &board) {
     assert(board.checkBoard());
     board.historyIndex--;
     assert(board.historyIndex >= 0 && board.historyIndex < MAX_GAME_MOVE);
