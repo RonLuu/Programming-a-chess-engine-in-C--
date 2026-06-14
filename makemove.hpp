@@ -1,3 +1,5 @@
+#pragma once
+
 #include "board.hpp"
 #include "attack.hpp"
 

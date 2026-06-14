@@ -1,3 +1,5 @@
+#pragma once
+
 #include "board.hpp"
 constexpr int numKnDir = 8;
 constexpr int numRkDir = 4;
