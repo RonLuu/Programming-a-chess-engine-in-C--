@@ -93,13 +93,6 @@ extern U64 pieceHashKeys[NUM_UNIQUE_PIECE][NUM_BIG_SQ];
 extern U64 sideHashKey;
 extern U64 castleHashKeys[16];
 
-void allInit();
-void initSq120And64();
-void initBitMasks();
-void initHashKeys();
-void initFileRankBrd();
-
-
 constexpr int fileRankToSq(int file, int rank) {
     return rank * 10 + (file + 21);
 }

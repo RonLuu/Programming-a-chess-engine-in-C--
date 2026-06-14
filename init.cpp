@@ -1,6 +1,6 @@
 // A file to initialise the game
+#include "init.hpp"
 #include "defintion.hpp"
-// #include "helper.hpp"
 #include <iostream>
 #include <bitset>
 #include <random>
