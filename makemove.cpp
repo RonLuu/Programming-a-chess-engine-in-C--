@@ -159,7 +159,6 @@ void applyCapturedPiece(int move, Board &board) {
     int capturedPiece = moveToCapturedPiece(move);
     if (capturedPiece != EMPTY) {
         assert(isPieceValid(capturedPiece));
-        if (to == 62) std::cout << "Holer" << std::endl;
         clearPiece(to, board);
         board.fiftyMove = 0;
     }
@@ -247,7 +246,7 @@ void undoEnPassant(int move, Board &board) {
     if (board.side == WHITE) {
         addPiece(to - 10, board, bP);
     } else {
-        addPiece(to - 10, board, wP);
+        addPiece(to + 10, board, wP);
     }
 }
 void undoCastle(int move, Board &board) {
