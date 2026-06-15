@@ -14,8 +14,8 @@ bool isAttackedByPawn(int sq, int side, Board& board) {
     return false;
 }
 bool isAttackedByKnight(int sq, int side, Board& board) {
-    for (int knDir = 0; knDir < numKnDir; knDir++) {
-        int piece = board.squareToPiece[sq+knDir];
+    for (int index = 0; index < numKnDir; index++) {
+        int piece = board.squareToPiece[sq+KnDir[index]];
         if (isPieceValid(piece) && isKnight[piece] && pieceColor[piece] == side) {
             return true;
         }
