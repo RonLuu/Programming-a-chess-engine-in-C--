@@ -29,10 +29,10 @@ void addBlackPawnMove(Board &board, int from, MOVELIST &moveList) {
         int move = createMove(from, to, EMPTY, EMPTY, NO_FLAG);
         addQuietMove(board, move, moveList);
     } else {
-        int promoteQ = createMove(from, to, EMPTY, wQ, NO_FLAG);
-        int promoteR = createMove(from, to, EMPTY, wR, NO_FLAG);
-        int promoteN = createMove(from, to, EMPTY, wN, NO_FLAG);
-        int promoteB = createMove(from, to, EMPTY, wB, NO_FLAG);
+        int promoteQ = createMove(from, to, EMPTY, bQ, NO_FLAG);
+        int promoteR = createMove(from, to, EMPTY, bR, NO_FLAG);
+        int promoteN = createMove(from, to, EMPTY, bN, NO_FLAG);
+        int promoteB = createMove(from, to, EMPTY, bB, NO_FLAG);
 
         addQuietMove(board, promoteQ, moveList);
         addQuietMove(board, promoteR, moveList);
@@ -49,10 +49,10 @@ void addBlackPawnCaptureMove(Board &board, int from, int to, int capturedPiece, 
         int move = createMove(from, to, capturedPiece, EMPTY, NO_FLAG);
         addCaptureMove(board, move, moveList);
     } else {
-        int promoteQ = createMove(from, to, capturedPiece, wQ, NO_FLAG);
-        int promoteR = createMove(from, to, capturedPiece, wR, NO_FLAG);
-        int promoteN = createMove(from, to, capturedPiece, wN, NO_FLAG);
-        int promoteB = createMove(from, to, capturedPiece, wB, NO_FLAG);
+        int promoteQ = createMove(from, to, capturedPiece, bQ, NO_FLAG);
+        int promoteR = createMove(from, to, capturedPiece, bR, NO_FLAG);
+        int promoteN = createMove(from, to, capturedPiece, bN, NO_FLAG);
+        int promoteB = createMove(from, to, capturedPiece, bB, NO_FLAG);
 
         addCaptureMove(board, promoteQ, moveList);
         addCaptureMove(board, promoteR, moveList);
