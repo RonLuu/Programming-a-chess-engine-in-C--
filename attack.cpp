@@ -27,7 +27,7 @@ bool isAttackedByRookQueen(int sq, int side, Board& board) {
         int newSq = sq + RkDir[index];
         int curPiece = board.squareToPiece[newSq];
 
-        while (curPiece != OFFBOARD) {
+        while (curPiece != NULL_PIECE) {
             if (curPiece != EMPTY) {
                 if (isRookQueen[curPiece] && pieceColor[curPiece] == side) {
                     return true;
@@ -46,7 +46,7 @@ bool isAttackedByBishopQueen(int sq, int side, Board& board) {
         int newSq = sq + BsDir[index];
         int curPiece = board.squareToPiece[newSq];
 
-        while (curPiece != OFFBOARD) {
+        while (curPiece != NULL_PIECE) {
             if (curPiece != EMPTY) {
                 if (isBishopQueen[curPiece] && pieceColor[curPiece] == side) {
                     return true;
@@ -61,11 +61,11 @@ bool isAttackedByBishopQueen(int sq, int side, Board& board) {
     return false;
 }
 bool isAttackedByKing(int sq, int side, Board& board) {
-    for (int index = 0; index < numBsDir; index++) {
-        int newSq = sq + BsDir[index];
+    for (int index = 0; index < numKiDir; index++) {
+        int newSq = sq + KiDir[index];
         int curPiece = board.squareToPiece[newSq];
 
-        if (curPiece != OFFBOARD) {
+        if (isPieceValid(curPiece)) {
             if (isKing[curPiece] && pieceColor[curPiece] == side) {
                 return true;
             }
