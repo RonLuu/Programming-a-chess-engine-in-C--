@@ -138,7 +138,7 @@ void generatePawnAndCastleMoves(Board &board, MOVELIST &moveList) {
         }
         if (board.castlePermission & WKCA) {
             if (board.squareToPiece[F1] == EMPTY && board.squareToPiece[G1] == EMPTY) {
-                if (!isSqBeingAttacked(F1, BLACK, board) && !isSqBeingAttacked(G1, BLACK, board)) {
+                if (!isSqBeingAttacked(E1, BLACK, board) && !isSqBeingAttacked(F1, BLACK, board)) {
                     int move = createMove(E1, G1, EMPTY, EMPTY, CASTLE_FLAG);
                     addQuietMove(board, move, moveList);
                 }
@@ -182,7 +182,7 @@ void generatePawnAndCastleMoves(Board &board, MOVELIST &moveList) {
         }
         if (board.castlePermission & BKCA) {
             if (board.squareToPiece[F8] == EMPTY && board.squareToPiece[G8] == EMPTY) {
-                if (!isSqBeingAttacked(F8, WHITE, board) && !isSqBeingAttacked(G8, WHITE, board)) {
+                if (!isSqBeingAttacked(E8, WHITE, board) && !isSqBeingAttacked(F8, WHITE, board)) {
                     int move = createMove(E8, G8, EMPTY, EMPTY, CASTLE_FLAG);
                     addQuietMove(board, move, moveList);
                 }
