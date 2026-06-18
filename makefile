@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -std=c++20 -Wall -DDEBUG
 
-SRCS = attack.cpp board.cpp game.cpp init.cpp io.cpp makemove.cpp movegen.cpp perft.cpp
+SRCS = attack.cpp board.cpp game.cpp init.cpp io.cpp makemove.cpp movegen.cpp perft.cpp search.cpp
 OBJS = $(SRCS:.cpp=.o)
 TARGET = game
 
