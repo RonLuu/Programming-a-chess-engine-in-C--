@@ -65,11 +65,10 @@ bool isAttackedByKing(int sq, int side, Board& board) {
         int newSq = sq + KiDir[index];
         int curPiece = board.squareToPiece[newSq];
 
-        if (isPieceValid(curPiece)) {
+        if (isPieceValid(curPiece) || curPiece == EMPTY) {
             if (isKing[curPiece] && pieceColor[curPiece] == side) {
                 return true;
             }
-            break;
         }
     }
 
