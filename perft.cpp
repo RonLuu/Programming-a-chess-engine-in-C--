@@ -48,3 +48,46 @@ void perftTest(Board &board, int depth) {
     long elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     std::cout << "\nTest Complete : "<< leafNode << " nodes visited in "<< elapsed <<" ms\n";
 }
+
+void runPerftSuite(const std::string &filename, Board &board) {
+    std::ifstream file(filename);
+    std::string line;
+    int testCount = 0;
+    while (std::getline(file, line)) {
+        if (line.empty())
+            continue;
+        testCount++;
+        if (testCount < 15) {
+            continue;
+        }
+        std::cout << "Test " << testCount << std::endl;
+        std::istringstream ss(line);
+        std::string fen;
+        std::getline(ss, fen, ';');
+
+        parseFen(board, fen);
+
+        std::string token;
+        while (std::getline(ss, token, ';')) {
+            std::istringstream ts(token);
+            std::string depthStr;
+            long expected;
+            ts >> depthStr >> expected;
+            
+            int depth = std::stoi(depthStr.substr(1)); // strip 'D'
+            if (depth != 5) {
+                continue;
+            }
+            leafNode = 0;
+            perft(board, depth);
+
+            bool pass = leafNode == expected;
+            std::cout << (pass ? "PASS" : "FAIL") << " depth " << depth
+                      << " expected " << expected << " got " << leafNode
+                      << "\n";
+            if (!pass) {
+                exit(1);
+            }
+        }
+    }
+}
