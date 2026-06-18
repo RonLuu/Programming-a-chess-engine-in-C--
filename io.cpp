@@ -176,6 +176,47 @@ void parseFen(Board &board, std::string_view fen) {
 
     board.updateListMaterial();
 }
+int parseMove(Board &board, std::string_view fen) {
+    assert(board.checkBoard());
+    if (fen[0] > 'h' || fen[0] < 'a') return NO_MOVE;
+    if (fen[1] > '8' || fen[1] < '1') return NO_MOVE;
+    if (fen[2] > 'h' || fen[2] < 'a') return NO_MOVE;
+    if (fen[3] > '8' || fen[3] < '1') return NO_MOVE;
+        
+    int from = fileRankToSq(fen[0]-'a',fen[1]-'1');
+    int to   = fileRankToSq(fen[2]-'a',fen[3]-'1');
+    assert(isSqOnBoard(from) && isSqOnBoard(to));
+
+    MOVELIST moveList;
+    generateAllMoves(board, moveList);
+
+    for (int moveNum = 0; moveNum < moveList.currentSize; moveNum++) {
+        int curMove = moveList.moves[moveNum].move;
+        
+        if (moveToFrom(curMove) != from || moveToTo(curMove) != to) {
+            continue;
+        }
+
+        int promotedPiece = moveToPromotedPiece(curMove);
+        if (promotedPiece != NULL_PIECE && promotedPiece != EMPTY) {
+            if (isKnight[promotedPiece] && fen[4] == 'n') {
+                return curMove;
+            }
+            else if (isRookQueen[promotedPiece] && isBishopQueen[promotedPiece] && fen[4] == 'q') {
+                return curMove;
+            }
+            else if (isRookQueen[promotedPiece] && !isBishopQueen[promotedPiece] && fen[4] == 'r') {
+                return curMove;
+            }
+            else if (!isRookQueen[promotedPiece] && isBishopQueen[promotedPiece] && fen[4] == 'b') {
+                return curMove;
+            }
+            continue;
+        }
+        return curMove;
+    }
+    return NO_MOVE;
+}
 
 void printBoard(Board &board) {
     std::cout << "\nGame Board:\n";
