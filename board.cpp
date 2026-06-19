@@ -216,7 +216,6 @@ void Board::resetBoard() {
     
     castlePermission = 0;
 
-
     // Set all the number of all types of pieces to be 0
     // Set all material points to be 0
     for (int i = 0; i < NUM_OF_SIDE; i++)
@@ -233,6 +232,7 @@ void Board::resetBoard() {
         {
             pieceSq[i][j] = NO_SQ;
         }
-        
     }
+
+    pvTable.init();
 }

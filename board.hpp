@@ -1,6 +1,7 @@
 #pragma once
 
 #include "defintion.hpp"
+#include "pvtable.hpp"
 
 struct Board {
     int squareToPiece[NUM_BIG_SQ];
@@ -32,7 +33,7 @@ struct Board {
 
     int pieceSq[NUM_UNIQUE_PIECE][MAX_NUM_PIECE];
 
-
+    PVTable pvTable;
     bool checkBoard();
     U64 generateHashKey();
     void resetBoard();
