@@ -35,6 +35,10 @@ struct Board {
 
     std::array<int, MAX_DEPTH> pvSequence;
 
+    std::array<std::array<int, NUM_BIG_SQ>, NUM_UNIQUE_PIECE> searchHistory;
+    std::array<std::array<int, MAX_DEPTH>, NUM_UNIQUE_PIECE> searchKiller;
+
+
     bool checkBoard();
     U64 generateHashKey();
     void resetBoard();
