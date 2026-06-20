@@ -2,7 +2,7 @@
 
 #include "board.hpp"
 
-constexpr int castlePermission[120] = {
+constexpr std::array<int, NUM_BIG_SQ> castlePermission = {
     15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
     15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
     15, 13, 15, 15, 15, 12, 15, 15, 14, 15,

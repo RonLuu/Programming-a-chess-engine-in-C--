@@ -5,18 +5,20 @@
 #include <bitset>
 #include <random>
 
-int sq120To64[NUM_BIG_SQ];
-int sq64To120[NUM_SML_SQ];
+std::array<int, NUM_BIG_SQ> sq120To64;
+std::array<int, NUM_SML_SQ> sq64To120;
 
-int sqToRank[NUM_BIG_SQ];
-int sqToFile[NUM_BIG_SQ];
+std::array<int, NUM_BIG_SQ> sqToRank;
+std::array<int, NUM_BIG_SQ> sqToFile;
 
-U64 setMask[NUM_SML_SQ];
-U64 clrMask[NUM_SML_SQ];
+std::array<U64, NUM_SML_SQ> setMask;
+std::array<U64, NUM_SML_SQ> clrMask;
 
-U64 pieceHashKeys[NUM_UNIQUE_PIECE][NUM_BIG_SQ];
+std::array<std::array<U64, NUM_BIG_SQ>, NUM_UNIQUE_PIECE> pieceHashKeys;
+
 U64 sideHashKey;
-U64 castleHashKeys[16];
+
+std::array<U64, 16> castleHashKeys;
 
 std::mt19937_64 rng(std::random_device{}());
 

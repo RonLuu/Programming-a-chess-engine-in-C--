@@ -4,9 +4,9 @@
 #include "pvtable.hpp"
 
 struct Board {
-    int squareToPiece[NUM_BIG_SQ];
-    U64 pawnBitboard[3];
-    int kingSq[NUM_OF_SIDE];
+    std::array<int, NUM_BIG_SQ> squareToPiece;
+    std::array<U64, NUM_OF_SIDE + 1> pawnBitboard;
+    std::array<int, NUM_OF_SIDE> kingSq;
 
     int side;
 
@@ -17,24 +17,25 @@ struct Board {
     int ply;
     
     int historyIndex;
-    UNDO history[MAX_GAME_MOVE];
+    std::array<UNDO, MAX_GAME_MOVE> history;
     
     U64 hashkey;
 
-    int numPieceOnBoard[NUM_UNIQUE_PIECE];
+    std::array<int, NUM_UNIQUE_PIECE> numPieceOnBoard;
 
     int castlePermission;
 
-    int numBigPieces[NUM_OF_SIDE];
-    int numMajPieces[NUM_OF_SIDE];
-    int numMinPieces[NUM_OF_SIDE];
+    std::array<int, NUM_OF_SIDE> numBigPieces;
+    std::array<int, NUM_OF_SIDE> numMajPieces;
+    std::array<int, NUM_OF_SIDE> numMinPieces;
+    
+    std::array<int, NUM_OF_SIDE> materialPoints;
 
-    int materialPoints[NUM_OF_SIDE];
+    std::array<std::array<int, MAX_NUM_PIECE>, NUM_UNIQUE_PIECE> pieceSq;
 
-    int pieceSq[NUM_UNIQUE_PIECE][MAX_NUM_PIECE];
+    std::array<int, MAX_DEPTH> pvSequence;
 
     PVTable pvTable;
-    int pvSequence[MAX_DEPTH];
 
     bool checkBoard();
     U64 generateHashKey();

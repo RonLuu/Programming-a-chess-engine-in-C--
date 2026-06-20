@@ -45,20 +45,20 @@ constexpr int PAWN_START_FLAG = 0x80000;
 constexpr int PROMOTE_FLAG    = 0xF00000;
 constexpr int CASTLE_FLAG     = 0x1000000;
 
-constexpr int pieceToValue[13] = {0, 100, 325, 325, 550, 1000, 50000, 100, 325, 325, 550, 1000, 50000};
-constexpr int pieceColor[13] = {BOTH, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK};
+constexpr std::array<int, NUM_UNIQUE_PIECE> pieceToValue = {0, 100, 325, 325, 550, 1000, 50000, 100, 325, 325, 550, 1000, 50000};
+constexpr std::array<int, NUM_UNIQUE_PIECE> pieceColor = {BOTH, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK};
 
-constexpr bool isPieceBig[13] = {false, false, true, true, true, true, true, false, true, true, true, true, true};
-constexpr bool isPieceMaj[13] = {false, false, false, false, true, true, true, false, false, false, true, true, true};
-constexpr bool isPieceMin[13] = {false, false, true, true, false, false, false, false, true, true, false, false, false};
+constexpr std::array<bool, NUM_UNIQUE_PIECE> isPieceBig = {false, false, true, true, true, true, true, false, true, true, true, true, true};
+constexpr std::array<bool, NUM_UNIQUE_PIECE> isPieceMaj = {false, false, false, false, true, true, true, false, false, false, true, true, true};
+constexpr std::array<bool, NUM_UNIQUE_PIECE> isPieceMin = {false, false, true, true, false, false, false, false, true, true, false, false, false};
 
-constexpr bool isPawn[13] = {false, true,  false, false, false, false, false, true,  false, false, false, false, false};
-constexpr bool isKnight[13] = {false, false, true,  false, false, false, false, false, true,  false, false, false, false};
-constexpr bool isKing[13] = {false, false, false, false, false, false, true, false, false, false, false, false, true};
-constexpr bool isRookQueen[13] = {false, false, false, false, true, true, false, false, false, false, true,  true, false};
-constexpr bool isBishopQueen[13] = {false, false, false, true,  false, true, false, false, false, true,  false, true,  false};
+constexpr std::array<bool, NUM_UNIQUE_PIECE> isPawn = {false, true,  false, false, false, false, false, true,  false, false, false, false, false};
+constexpr std::array<bool, NUM_UNIQUE_PIECE> isKnight = {false, false, true,  false, false, false, false, false, true,  false, false, false, false};
+constexpr std::array<bool, NUM_UNIQUE_PIECE> isKing = {false, false, false, false, false, false, true, false, false, false, false, false, true};
+constexpr std::array<bool, NUM_UNIQUE_PIECE> isRookQueen = {false, false, false, false, true, true, false, false, false, false, true,  true, false};
+constexpr std::array<bool, NUM_UNIQUE_PIECE> isBishopQueen = {false, false, false, true,  false, true, false, false, false, true,  false, true,  false};
 
-constexpr bool isPieceSlidingPiece[13] = {false, false, false, true, true, true, false, false, false, true,  true, true, false};
+constexpr std::array<bool, NUM_UNIQUE_PIECE> isPieceSlidingPiece = {false, false, false, true, true, true, false, false, false, true,  true, true, false};
 
 constexpr std::string_view sideChar = "wb-";
 constexpr std::string_view rankChar = "12345678";
@@ -85,15 +85,15 @@ struct MOVELIST {
 };
 
 // init.c
-extern int sq120To64[NUM_BIG_SQ];
-extern int sq64To120[NUM_SML_SQ];
-extern int sqToRank[NUM_BIG_SQ];
-extern int sqToFile[NUM_BIG_SQ];
-extern U64 setMask[NUM_SML_SQ];
-extern U64 clrMask[NUM_SML_SQ];
-extern U64 pieceHashKeys[NUM_UNIQUE_PIECE][NUM_BIG_SQ];
+extern std::array<int, NUM_BIG_SQ> sq120To64;
+extern std::array<int, NUM_SML_SQ> sq64To120;
+extern std::array<int, NUM_BIG_SQ> sqToRank;
+extern std::array<int, NUM_BIG_SQ> sqToFile;
+extern std::array<U64, NUM_SML_SQ> setMask;
+extern std::array<U64, NUM_SML_SQ> clrMask;
+extern std::array<std::array<U64, NUM_BIG_SQ>, NUM_UNIQUE_PIECE> pieceHashKeys;
 extern U64 sideHashKey;
-extern U64 castleHashKeys[16];
+extern std::array<U64, 16> castleHashKeys;
 
 constexpr int fileRankToSq(int file, int rank) {
     return rank * 10 + (file + 21);
