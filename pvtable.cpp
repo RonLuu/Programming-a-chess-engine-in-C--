@@ -38,13 +38,11 @@ int PVTable::getPVSequence(Board &board, int depth) {
     int curDepth = 0;
     while (move != NO_MOVE && curDepth < depth) {
         assert(curDepth < MAX_DEPTH);
-        if (isMoveValid(board, move)) {
-            makeMove(board, move);
-            board.pvSequence[curDepth++] = move;
-        } else {
-            break;
-        }
-
+        if (!isMoveValid(board, move)) {
+            break;  
+        } 
+        makeMove(board, move);
+        board.pvSequence[curDepth++] = move;
         move = probe(board.hashkey);
     }
 
