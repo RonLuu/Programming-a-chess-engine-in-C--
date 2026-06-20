@@ -98,8 +98,7 @@ struct SEARCHINFO {
 
     bool quit;
     bool stop;
-    
-}
+};
 
 // init.c
 extern std::array<int, NUM_BIG_SQ> sq120To64;
