@@ -35,8 +35,6 @@ struct Board {
 
     std::array<int, MAX_DEPTH> pvSequence;
 
-    PVTable pvTable;
-
     bool checkBoard();
     U64 generateHashKey();
     void resetBoard();

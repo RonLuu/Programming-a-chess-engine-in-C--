@@ -19,6 +19,8 @@ int main() {
     char input[6];
     int max = 0;
     int move = NO_MOVE;
+    PVTable pvTable;
+
     while(true) {
         printBoard(board);
         std::cout << "Please enter a move > ";
@@ -31,7 +33,7 @@ int main() {
             continue;
         } else if (input[0] == 'p') {
             // perftTest(board, 4);
-            max = board.pvTable.getPVSequence(board, 4);
+            max = pvTable.getPVSequence(board, 4);
             std::cout << "PV squences of " << max << " moves: ";
             for (int pvNum = 0; pvNum < max; pvNum++)
             {
@@ -42,12 +44,10 @@ int main() {
         } else {
             int move = parseMove(board, input);
             if (move != NO_MOVE) {
-                board.pvTable.store(board.hashkey, move);
+                pvTable.store(board.hashkey, move);
                 makeMove(board, move);
                 if (isBoardRepeated(board)) {
                     std::cout << "I've seen this before" << std::endl;
-                } else {
-                    
                 }
             } else {
                 std::cout << "Move was not parsed" << std::endl;
