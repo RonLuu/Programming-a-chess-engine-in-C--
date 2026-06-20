@@ -1,9 +1,6 @@
 #pragma once
 
 #include "board.hpp"
-#include "io.hpp"
-#include "makemove.hpp"
-#include "movegen.hpp"
 #include <chrono>
 #include <fstream>
 #include <iostream>

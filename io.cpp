@@ -1,4 +1,5 @@
 #include "io.hpp"
+#include "movegen.hpp"
 
 std::string_view parsePosition(std::string_view fen, Board &board) {
     int rank = RANK_8;

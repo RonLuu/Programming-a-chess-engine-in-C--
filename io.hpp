@@ -1,7 +1,6 @@
 #pragma once
 
 #include "board.hpp"
-#include "movegen.hpp"
 
 std::string moveToStr(int move);
 

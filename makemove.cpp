@@ -1,3 +1,4 @@
+#include "attack.hpp"
 #include "makemove.hpp"
 
 void addPiece(int sq, Board &board, int piece) {

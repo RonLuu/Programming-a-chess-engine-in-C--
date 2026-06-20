@@ -1,7 +1,6 @@
 #pragma once
 
 #include "board.hpp"
-#include "attack.hpp"
 
 constexpr int loopSlidePiece[8] = {wB, wR, wQ, 0, bB, bR, bQ, 0};
 constexpr int loopSlideIndex[2] = {0, 4};
@@ -32,3 +31,4 @@ constexpr int createMove(int from, int to, int captured, int promoted, int FLAG)
 }
 
 void generateAllMoves(Board& board, MOVELIST& moveList);
+bool isMoveValid(Board &board, int move);

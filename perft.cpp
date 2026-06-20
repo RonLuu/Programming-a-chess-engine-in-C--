@@ -1,4 +1,7 @@
 #include "perft.hpp"
+#include "io.hpp"
+#include "makemove.hpp"
+#include "movegen.hpp"
 
 long leafNode = 0;
 

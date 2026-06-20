@@ -1,3 +1,5 @@
+#include "attack.hpp"
+#include "makemove.hpp"
 #include "movegen.hpp"
 
 void addCaptureMove(Board &board, int move, MOVELIST &moveList) {
@@ -277,4 +279,18 @@ void generateAllMoves(Board &board, MOVELIST &moveList) {
     generatePawnAndCastleMoves(board, moveList);
     generateSlidePieceMoves(board, moveList);
     generateNonSlidePieceMoves(board, moveList);
+}
+
+bool isMoveValid(Board &board, int move) {
+    MOVELIST moveList;
+    generateAllMoves(board, moveList);
+
+    for (int moveNum = 0; moveNum < moveList.currentSize; moveNum++) {
+        int curMove = moveList.moves[moveNum].move;
+        if (!makeMove(board, curMove)) continue;
+        takeMove(board);
+        if (curMove == move) return true;
+    }
+    
+    return false;
 }
