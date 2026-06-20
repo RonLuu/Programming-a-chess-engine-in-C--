@@ -84,6 +84,23 @@ struct MOVELIST {
     int currentSize = 0;
 };
 
+struct SEARCHINFO {
+    int startTime;
+    int stopTime;
+
+    int curDepth;
+    
+    int depthLimit;
+    int timeLimit;
+
+    int movesToGo;
+    int infinite;
+
+    bool quit;
+    bool stop;
+    
+}
+
 // init.c
 extern std::array<int, NUM_BIG_SQ> sq120To64;
 extern std::array<int, NUM_SML_SQ> sq64To120;
