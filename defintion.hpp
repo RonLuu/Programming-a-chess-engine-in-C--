@@ -36,6 +36,7 @@ constexpr int ILLEGAL_MOVE = 0;
 constexpr int MAX_MOVE_GENERATED = 256;
 constexpr int MAX_GAME_MOVE = 2048;
 constexpr int NO_MOVE = 0;
+constexpr int MAX_DEPTH = 64;
 
 constexpr int NO_FLAG         = 0;
 constexpr int CAPTURE_FLAG    = 0x7C000;

@@ -34,6 +34,8 @@ struct Board {
     int pieceSq[NUM_UNIQUE_PIECE][MAX_NUM_PIECE];
 
     PVTable pvTable;
+    int pvSequence[MAX_DEPTH];
+
     bool checkBoard();
     U64 generateHashKey();
     void resetBoard();
